@@ -2,8 +2,17 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
 namespace TruckGame
 {
+    
+
+
     /// <summary>
     /// This is the main type for your game.
     /// </summary>
@@ -11,6 +20,7 @@ namespace TruckGame
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        Player player;
 
         public Game1()
         {
@@ -27,6 +37,7 @@ namespace TruckGame
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            player = new Player();
 
             base.Initialize();
         }
@@ -40,6 +51,9 @@ namespace TruckGame
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            Vector2 playerPosition = new Vector2(GraphicsDevice.Viewport.TitleSafeArea.X, GraphicsDevice.Viewport.TitleSafeArea.Y + GraphicsDevice.Viewport.TitleSafeArea.Height / 2);
+            player.Initialize(Content.Load<Texture2D>("player"), playerPosition);
+
             // TODO: use this.Content to load your game content here
         }
 
@@ -50,6 +64,8 @@ namespace TruckGame
         protected override void UnloadContent()
         {
             // TODO: Unload any non ContentManager content here
+
+            Content.Unload();
         }
 
         /// <summary>
@@ -76,6 +92,10 @@ namespace TruckGame
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
+            spriteBatch.Begin();
+            player.Draw(spriteBatch);
+            spriteBatch.End();
+
 
             base.Draw(gameTime);
         }
