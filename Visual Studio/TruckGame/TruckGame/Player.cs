@@ -11,38 +11,47 @@ namespace TruckGame
 {
     class Player
     {
-        public void Initialize(Texture2D texture, Vector2 position)
+        // public Texture2D PlayerTexture;
+        public Animation playerAnimation;
+
+        public Vector2 position;
+        public bool active;
+        public int health;
+
+        public void Initialize(Animation animation, Vector2 position)
         {
-            PlayerTexture = texture;
-            Position = position;
-            Active = true;
-            Health = 100;
+            playerAnimation = animation;
+            this.position = position;
+            active = true;
+            health = 100;
         }
 
-        public void Update()
+        public void Update(GameTime gameTime)
         {
-
+            playerAnimation.Position = position;
+            playerAnimation.Update(gameTime);
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(PlayerTexture, Position, null, Color.Red, Angle, new Vector2(Width / 2, Height / 2), 1f, SpriteEffects.None, 0f);
+            playerAnimation.Draw(spriteBatch);
         }
 
-        public Texture2D PlayerTexture;
-        public Vector2 Position;
-        public bool Active;
-        public int Health;
-        public float Angle;
-
+        
         public int Width
         {
-            get { return PlayerTexture.Width; }
+            get { return playerAnimation.FrameWidth; }
         }
 
         public int Height
         {
-            get { return PlayerTexture.Height; }
+            get { return playerAnimation.FrameHeight; }
+        }
+
+        public float Angle
+        {
+            get { return playerAnimation.angle; }
+            set { playerAnimation.angle = value; }
         }
     }
 }

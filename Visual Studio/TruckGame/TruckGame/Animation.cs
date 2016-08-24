@@ -13,11 +13,12 @@ namespace TruckGame
     class Animation
     {
         Texture2D spriteStrip;
-        float scale;
+        public float scale;
         int elapsedTime;
         int frameTime;
         int frameCount;
         int currentFrame;
+        public float angle;
 
         Color color;
         Rectangle sourceRect = new Rectangle();
@@ -48,6 +49,7 @@ namespace TruckGame
             // Set the time to zero
             elapsedTime = 0;
             currentFrame = 0;
+            angle = 0.0f;
 
             // Set the Animation to active by default
             Active = true;
@@ -99,7 +101,7 @@ namespace TruckGame
             // Only draw the animation when we are active
             if (Active)
             {
-                spriteBatch.Draw(spriteStrip, destinationRect, sourceRect, color);
+                spriteBatch.Draw(spriteStrip, destinationRect, sourceRect, color, angle, new Vector2(FrameWidth / 2, FrameHeight / 2), SpriteEffects.None, 1.0f);
             }
         }
 
