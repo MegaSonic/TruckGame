@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Input.Touch;
 
 using System;
 using System.Collections.Generic;
@@ -21,6 +22,16 @@ namespace TruckGame
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Player player;
+        KeyboardState currentKeyboardState;
+        KeyboardState previousKeyboardState;
+
+        GamePadState currentGamePadState;
+        GamePadState previousGamePadState;
+
+        MouseState currentMouseState;
+        MouseState previousMouseState;
+
+        float playerMoveSpeed = 100.0f;
 
         public Game1()
         {
@@ -39,6 +50,11 @@ namespace TruckGame
             // TODO: Add your initialization logic here
             player = new Player();
 
+            
+            TouchPanel.EnabledGestures = GestureType.FreeDrag;
+
+
+            // I think this always goes last?
             base.Initialize();
         }
 
@@ -79,8 +95,47 @@ namespace TruckGame
                 Exit();
 
             // TODO: Add your update logic here
+            previousGamePadState = currentGamePadState;
+            previousKeyboardState = currentKeyboardState;
+
+            currentKeyboardState = Keyboard.GetState();
+            currentGamePadState = GamePad.GetState(PlayerIndex.One);
+
+            UpdatePlayer(gameTime);
+
 
             base.Update(gameTime);
+        }
+
+        private void UpdatePlayer(GameTime gameTime)
+        {
+            float deltaTime = (float) gameTime.ElapsedGameTime.TotalSeconds;
+
+            player.Position.X += currentGamePadState.ThumbSticks.Left.X * playerMoveSpeed * deltaTime;
+            player.Position.Y -= currentGamePadState.ThumbSticks.Left.Y * playerMoveSpeed * deltaTime;
+
+            if (currentKeyboardState.IsKeyDown(Keys.Left) || currentGamePadState.DPad.Left == ButtonState.Pressed)
+            {
+                player.Position.X -= playerMoveSpeed * deltaTime;
+            }
+
+            if (currentKeyboardState.IsKeyDown(Keys.Right) || currentGamePadState.DPad.Right == ButtonState.Pressed)
+            {
+                player.Position.X += playerMoveSpeed * deltaTime;
+            }
+
+            if (currentKeyboardState.IsKeyDown(Keys.Up) || currentGamePadState.DPad.Up == ButtonState.Pressed)
+            {
+                player.Position.Y -= playerMoveSpeed * deltaTime;
+            }
+
+            if (currentKeyboardState.IsKeyDown(Keys.Down) || currentGamePadState.DPad.Down == ButtonState.Pressed)
+            {
+                player.Position.Y += playerMoveSpeed * deltaTime;
+            }
+
+            player.Position.X = MathHelper.Clamp(player.Position.X, 0, GraphicsDevice.Viewport.Width - player.Width);
+            player.Position.Y = MathHelper.Clamp(player.Position.Y, 0, GraphicsDevice.Viewport.Height - player.Height);
         }
 
         /// <summary>
