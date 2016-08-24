@@ -32,6 +32,7 @@ namespace TruckGame
         MouseState previousMouseState;
 
         float playerMoveSpeed = 100.0f;
+        float playerTurnSpeed = 1.0f;
 
         public Game1()
         {
@@ -114,25 +115,36 @@ namespace TruckGame
             player.Position.X += currentGamePadState.ThumbSticks.Left.X * playerMoveSpeed * deltaTime;
             player.Position.Y -= currentGamePadState.ThumbSticks.Left.Y * playerMoveSpeed * deltaTime;
 
-            if (currentKeyboardState.IsKeyDown(Keys.Left) || currentGamePadState.DPad.Left == ButtonState.Pressed)
+            if (currentKeyboardState.IsKeyDown(Keys.Left) || currentKeyboardState.IsKeyDown(Keys.A) || currentGamePadState.DPad.Left == ButtonState.Pressed)
             {
                 player.Position.X -= playerMoveSpeed * deltaTime;
             }
 
-            if (currentKeyboardState.IsKeyDown(Keys.Right) || currentGamePadState.DPad.Right == ButtonState.Pressed)
+            if (currentKeyboardState.IsKeyDown(Keys.Right) || currentKeyboardState.IsKeyDown(Keys.D) || currentGamePadState.DPad.Right == ButtonState.Pressed)
             {
                 player.Position.X += playerMoveSpeed * deltaTime;
             }
 
-            if (currentKeyboardState.IsKeyDown(Keys.Up) || currentGamePadState.DPad.Up == ButtonState.Pressed)
+            if (currentKeyboardState.IsKeyDown(Keys.Up) || currentKeyboardState.IsKeyDown(Keys.W) || currentGamePadState.DPad.Up == ButtonState.Pressed)
             {
                 player.Position.Y -= playerMoveSpeed * deltaTime;
             }
 
-            if (currentKeyboardState.IsKeyDown(Keys.Down) || currentGamePadState.DPad.Down == ButtonState.Pressed)
+            if (currentKeyboardState.IsKeyDown(Keys.Down) || currentKeyboardState.IsKeyDown(Keys.S) || currentGamePadState.DPad.Down == ButtonState.Pressed)
             {
                 player.Position.Y += playerMoveSpeed * deltaTime;
             }
+
+            if (currentKeyboardState.IsKeyDown(Keys.Q) || currentGamePadState.Buttons.LeftShoulder == ButtonState.Pressed)
+            {
+                player.Angle -= playerTurnSpeed * deltaTime;
+            }
+
+            if (currentKeyboardState.IsKeyDown(Keys.E) || currentGamePadState.Buttons.RightShoulder == ButtonState.Pressed)
+            {
+                player.Angle += playerTurnSpeed * deltaTime;
+            }
+            
 
             player.Position.X = MathHelper.Clamp(player.Position.X, 0, GraphicsDevice.Viewport.Width - player.Width);
             player.Position.Y = MathHelper.Clamp(player.Position.Y, 0, GraphicsDevice.Viewport.Height - player.Height);

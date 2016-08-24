@@ -26,13 +26,14 @@ namespace TruckGame
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(PlayerTexture, Position, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+            spriteBatch.Draw(PlayerTexture, Position, null, Color.Red, Angle, new Vector2(Width / 2, Height / 2), 1f, SpriteEffects.None, 0f);
         }
 
         public Texture2D PlayerTexture;
         public Vector2 Position;
         public bool Active;
         public int Health;
+        public float Angle;
 
         public int Width
         {
