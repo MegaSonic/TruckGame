@@ -23,6 +23,11 @@ namespace TruckGame
             this.Position = position;
         }
 
+        public virtual void Start()
+        {
+
+        }
+
         public virtual void Draw(SpriteBatch spriteBatch)
         {
             // spriteBatch.Draw(texture, Position, null, Color.White, rotation, new Vector2(texture.Width / 2, texture.Height / 2), scale, SpriteEffects.None, depth);

@@ -5,16 +5,22 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Content;
 
 namespace TruckGame 
 {
-    class Sprite : GameObject
+    class Sprite
     {
-        Texture2D texture;
+        public Texture2D texture;
+        public Vector2 position;
+        public Color color;
+        public float rotation, depth, scale;
 
-        public Sprite(Texture2D _texture, Vector2 _position) : base(_position)
+        public Sprite(Texture2D _texture, Vector2 _position, ContentManager _content, string asset)
         {
             texture = _texture;
+            position = _position;
+            texture = _content.Load<Texture2D>(asset);
         }
 
         public Rectangle BoundingBox
@@ -22,21 +28,16 @@ namespace TruckGame
             get
             {
                 return new Rectangle(
-                    (int)Position.X - texture.Width / 2,
-                    (int)Position.Y - texture.Height / 2,
+                    (int)position.X - texture.Width / 2,
+                    (int)position.Y - texture.Height / 2,
                     texture.Width,
                     texture.Height);
             }
         }
 
-        public override void Draw(SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, Position, null, Color.White, rotation, new Vector2(texture.Width / 2, texture.Height / 2), scale, SpriteEffects.None, depth);
-        }
-
-        public override void Update()
-        {
-            
+            spriteBatch.Draw(texture, position, null, color, rotation, new Vector2(texture.Width / 2, texture.Height / 2), scale, SpriteEffects.None, depth);
         }
     }
 }
