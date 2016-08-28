@@ -25,6 +25,8 @@ namespace TruckGame
         KeyboardState currentKeyboardState;
         KeyboardState previousKeyboardState;
 
+        public List<GameObject> objectsInScene;
+
         Texture2D background;
 
         GamePadState currentGamePadState;
@@ -174,6 +176,33 @@ namespace TruckGame
             
 
             base.Draw(gameTime);
+        }
+
+        public GameObject FindGameObjectByTag(string tag)
+        {
+            foreach (GameObject go in objectsInScene)
+            {
+                if (go.tag == tag)
+                {
+                    return go;
+                }
+            }
+
+            return null;
+        }
+
+        public List<GameObject> FindGameObjectsByTag(string tag)
+        {
+            List<GameObject> objects = new List<GameObject>();
+            foreach (GameObject go in objectsInScene)
+            {
+                if (go.tag == tag)
+                {
+                    objects.Add(go);
+                }
+            }
+
+            return objects;
         }
     }
 }

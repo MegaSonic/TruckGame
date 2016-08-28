@@ -17,6 +17,8 @@ namespace TruckGame
         public float depth = 1.0f;
         public float scale = 1.0f;
 
+        public string tag;
+
 
         public GameObject(Vector2 position)
         {
