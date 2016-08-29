@@ -12,17 +12,21 @@ namespace TruckGame
     public class GameObject
     {
         
-        public Vector2 Position;
+        public Vector2 position;
         public float rotation = 0.0f;
         public float depth = 1.0f;
         public float scale = 1.0f;
 
         public string tag;
 
+        public GameObject()
+        {
+
+        }
 
         public GameObject(Vector2 position)
         {
-            this.Position = position;
+            this.position = position;
         }
 
         public virtual void Start()
@@ -35,7 +39,7 @@ namespace TruckGame
             // spriteBatch.Draw(texture, Position, null, Color.White, rotation, new Vector2(texture.Width / 2, texture.Height / 2), scale, SpriteEffects.None, depth);
         }
 
-        public virtual void Update()
+        public virtual void Update(GameTime gameTime)
         {
             
         }

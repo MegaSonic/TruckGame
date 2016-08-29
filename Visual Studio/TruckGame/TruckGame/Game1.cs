@@ -22,21 +22,21 @@ namespace TruckGame
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Player player;
-        KeyboardState currentKeyboardState;
-        KeyboardState previousKeyboardState;
+        
+        public KeyboardState currentKeyboardState;
+        public KeyboardState previousKeyboardState;
 
         public List<GameObject> objectsInScene;
 
         Texture2D background;
 
-        GamePadState currentGamePadState;
-        GamePadState previousGamePadState;
+        public GamePadState currentGamePadState;
+        public GamePadState previousGamePadState;
 
         MouseState currentMouseState;
         MouseState previousMouseState;
 
-        float playerMoveSpeed = 100.0f;
-        float playerTurnSpeed = 1.0f;
+        
 
         public Game1()
         {
@@ -53,8 +53,10 @@ namespace TruckGame
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            objectsInScene = new List<GameObject>();
             player = new Player();
-            
+            objectsInScene.Add(player);
+
             TouchPanel.EnabledGestures = GestureType.FreeDrag;
 
 
@@ -76,7 +78,7 @@ namespace TruckGame
             playerAnimation.Initialize(playerTexture, Vector2.Zero, 111, 92, 2, 1000, Color.White, 1f, true );
 
             Vector2 playerPosition = new Vector2(GraphicsDevice.Viewport.TitleSafeArea.X + GraphicsDevice.Viewport.TitleSafeArea.Width / 2, GraphicsDevice.Viewport.TitleSafeArea.Y + GraphicsDevice.Viewport.TitleSafeArea.Height / 2);
-            player.Initialize(playerAnimation, playerPosition);
+            player.Start(this, playerAnimation, playerPosition);
             
             background = Content.Load<Texture2D>("bg_arena");
             // TODO: use this.Content to load your game content here
@@ -110,7 +112,12 @@ namespace TruckGame
             currentKeyboardState = Keyboard.GetState();
             currentGamePadState = GamePad.GetState(PlayerIndex.One);
 
-            UpdatePlayer(gameTime);
+            foreach (GameObject go in objectsInScene)
+            {
+                go.Update(gameTime);
+            }
+
+            //UpdatePlayer(gameTime);
 
 
             base.Update(gameTime);
@@ -120,44 +127,7 @@ namespace TruckGame
         {
             player.Update(gameTime);
 
-            float deltaTime = (float) gameTime.ElapsedGameTime.TotalSeconds;
-
-            player.position.X += currentGamePadState.ThumbSticks.Left.X * playerMoveSpeed * deltaTime;
-            player.position.Y -= currentGamePadState.ThumbSticks.Left.Y * playerMoveSpeed * deltaTime;
-
-            if (currentKeyboardState.IsKeyDown(Keys.Left) || currentKeyboardState.IsKeyDown(Keys.A) || currentGamePadState.DPad.Left == ButtonState.Pressed)
-            {
-                player.position.X -= playerMoveSpeed * deltaTime;
-            }
-
-            if (currentKeyboardState.IsKeyDown(Keys.Right) || currentKeyboardState.IsKeyDown(Keys.D) || currentGamePadState.DPad.Right == ButtonState.Pressed)
-            {
-                player.position.X += playerMoveSpeed * deltaTime;
-            }
-
-            if (currentKeyboardState.IsKeyDown(Keys.Up) || currentKeyboardState.IsKeyDown(Keys.W) || currentGamePadState.DPad.Up == ButtonState.Pressed)
-            {
-                player.position.Y -= playerMoveSpeed * deltaTime;
-            }
-
-            if (currentKeyboardState.IsKeyDown(Keys.Down) || currentKeyboardState.IsKeyDown(Keys.S) || currentGamePadState.DPad.Down == ButtonState.Pressed)
-            {
-                player.position.Y += playerMoveSpeed * deltaTime;
-            }
-
-            if (currentKeyboardState.IsKeyDown(Keys.Q) || currentGamePadState.Buttons.LeftShoulder == ButtonState.Pressed)
-            {
-                player.Angle -= playerTurnSpeed * deltaTime;
-            }
-
-            if (currentKeyboardState.IsKeyDown(Keys.E) || currentGamePadState.Buttons.RightShoulder == ButtonState.Pressed)
-            {
-                player.Angle += playerTurnSpeed * deltaTime;
-            }
             
-
-            player.position.X = MathHelper.Clamp(player.position.X, 0, GraphicsDevice.Viewport.Width - player.Width);
-            player.position.Y = MathHelper.Clamp(player.position.Y, 0, GraphicsDevice.Viewport.Height - player.Height);
         }
 
         /// <summary>
@@ -171,7 +141,13 @@ namespace TruckGame
             // TODO: Add your drawing code here
             spriteBatch.Begin();
             spriteBatch.Draw(background, new Rectangle(0, 0, background.Width, background.Height), Color.White);
-            player.Draw(spriteBatch);
+            // player.Draw(spriteBatch);
+
+            foreach (GameObject go in objectsInScene)
+            {
+                go.Draw(spriteBatch);
+            }
+
             spriteBatch.End();
             
 
