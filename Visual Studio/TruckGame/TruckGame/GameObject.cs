@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace TruckGame
 {
-    class GameObject
+    public class GameObject
     {
         
         public Vector2 Position;
