@@ -82,6 +82,11 @@ namespace TruckGame
                 Debug.WriteLine("Down");
             }
 
+            if (activeGame.currentKeyboardState.IsKeyDown(Keys.R))
+            {
+                activeGame.Reset();
+            }
+
             /*
             if (activeGame.currentKeyboardState.IsKeyDown(Keys.Q) || activeGame.currentGamePadState.Buttons.LeftShoulder == ButtonState.Pressed)
             {

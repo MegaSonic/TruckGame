@@ -212,5 +212,12 @@ namespace TruckGame
 
             return objects;
         }
+
+        public void Reset()
+        {
+            timer.playerTime = 0f;
+            player.Position = new Vector2(GraphicsDevice.Viewport.TitleSafeArea.X + GraphicsDevice.Viewport.TitleSafeArea.Width / 2, GraphicsDevice.Viewport.TitleSafeArea.Y + GraphicsDevice.Viewport.TitleSafeArea.Height / 2);
+            // Figure out how to reset game here
+        }
     }
 }

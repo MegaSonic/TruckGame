@@ -15,7 +15,7 @@ namespace TruckGame
     public class Timer : GameObject
     {
         public SpriteFont font;
-        float playerTime = 0f;
+        public float playerTime = 0f;
         string formattedTime;
 
 
