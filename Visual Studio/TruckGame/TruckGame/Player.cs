@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace TruckGame
 {
-    public class Player : GameObject
+    public class Player : GameObject, ICollideable
     {
         // public Texture2D PlayerTexture;
         public Animation playerAnimation;
@@ -36,6 +36,7 @@ namespace TruckGame
             active = true;
             health = 100;
             activeGame = game;
+            tag = "Player";
         }
 
         public override void Update(GameTime gameTime)
@@ -106,6 +107,7 @@ namespace TruckGame
         }
 
         
+
         public int Width
         {
             get { return playerAnimation.FrameWidth; }
@@ -138,6 +140,22 @@ namespace TruckGame
         {
             get { return playerAnimation.angle; }
             set { playerAnimation.angle = value; }
+        }
+
+        public Rectangle BoundingBox
+        {
+            get
+            {
+                return new Rectangle((int)this.X - playerAnimation.FrameWidth / 2, (int)this.Y - playerAnimation.FrameHeight / 2, playerAnimation.FrameWidth, playerAnimation.FrameHeight);
+            }
+        }
+
+        public void Collided(GameObject collidedWith)
+        {
+            if (collidedWith.tag == "Truck" )
+            {
+                // Kill the player
+            }
         }
     }
 }

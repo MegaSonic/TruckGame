@@ -121,10 +121,38 @@ namespace TruckGame
                 go.Update(gameTime);
             }
 
+            CheckCollisions();
+
             //UpdatePlayer(gameTime);
 
 
             base.Update(gameTime);
+        }
+
+        private void CheckCollisions()
+        {
+            // Detect collisions
+            for (int i = 0; i < objectsInScene.Count; i++)
+            {
+                ICollideable possibleCollideable = objectsInScene[i] as ICollideable;
+
+                if (possibleCollideable == null) continue;
+
+                for (int j = i + 1; i < objectsInScene.Count; i++)
+                {
+
+                    ICollideable secondCollideable = objectsInScene[j] as ICollideable;
+                    if (secondCollideable == null) continue;
+                    else
+                    {
+                        if (possibleCollideable.BoundingBox.Intersects(secondCollideable.BoundingBox))
+                        {
+                            possibleCollideable.Collided(objectsInScene[j]);
+                        }
+                    }
+
+                }
+            }
         }
 
         private void UpdatePlayer(GameTime gameTime)
