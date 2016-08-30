@@ -21,7 +21,7 @@ namespace TruckGame
 
         public Game1 activeGame;
 
-        public float playerMoveSpeed = 100.0f;
+        public float playerMoveSpeed = 150.0f;
         public float playerTurnSpeed = 1.0f;
 
         public Player()
@@ -45,30 +45,43 @@ namespace TruckGame
             this.X += activeGame.currentGamePadState.ThumbSticks.Left.X * playerMoveSpeed * deltaTime;
             this.Y -= activeGame.currentGamePadState.ThumbSticks.Left.Y * playerMoveSpeed * deltaTime;
 
+            bool left = false, right = false;
+
             if (activeGame.currentKeyboardState.IsKeyDown(Keys.Left) || activeGame.currentKeyboardState.IsKeyDown(Keys.A) || activeGame.currentGamePadState.DPad.Left == ButtonState.Pressed)
             {
                 this.X -= playerMoveSpeed * deltaTime;
+                Rotation = (float) Math.PI;
+                left = true;
                 Debug.WriteLine("Left");
             }
 
             if (activeGame.currentKeyboardState.IsKeyDown(Keys.Right) || activeGame.currentKeyboardState.IsKeyDown(Keys.D) || activeGame.currentGamePadState.DPad.Right == ButtonState.Pressed)
             {
                 this.X += playerMoveSpeed * deltaTime;
+                Rotation = 0f;
+                right = true;
                 Debug.WriteLine("Right");
             }
 
             if (activeGame.currentKeyboardState.IsKeyDown(Keys.Up) || activeGame.currentKeyboardState.IsKeyDown(Keys.W) || activeGame.currentGamePadState.DPad.Up == ButtonState.Pressed)
             {
                 this.Y -= playerMoveSpeed * deltaTime;
+                Rotation = (float)Math.PI * 3 / 2;
+                if (left) Rotation = (float)Math.PI * 5 / 4;
+                else if (right) Rotation = (float)Math.PI * 7 / 4;
                 Debug.WriteLine("Up");
             }
 
             if (activeGame.currentKeyboardState.IsKeyDown(Keys.Down) || activeGame.currentKeyboardState.IsKeyDown(Keys.S) || activeGame.currentGamePadState.DPad.Down == ButtonState.Pressed)
             {
                 this.Y += playerMoveSpeed * deltaTime;
+                Rotation = (float) Math.PI / 2;
+                if (left) Rotation = (float) Math.PI * 3/4;
+                else if (right) Rotation = (float)Math.PI * 1 / 4;
                 Debug.WriteLine("Down");
             }
 
+            /*
             if (activeGame.currentKeyboardState.IsKeyDown(Keys.Q) || activeGame.currentGamePadState.Buttons.LeftShoulder == ButtonState.Pressed)
             {
                 this.Rotation -= playerTurnSpeed * deltaTime;
@@ -78,10 +91,11 @@ namespace TruckGame
             {
                 this.Rotation += playerTurnSpeed * deltaTime;
             }
+            */
+            Debug.WriteLine(this.X + ", " + this.Y);
 
-
-            this.X = MathHelper.Clamp(position.X, 0, activeGame.GraphicsDevice.Viewport.Width - Width);
-            this.Y = MathHelper.Clamp(position.Y, 0, activeGame.GraphicsDevice.Viewport.Height - Height);
+            this.X = MathHelper.Clamp(this.X, playerAnimation.FrameWidth, activeGame.GraphicsDevice.Viewport.Width);
+            this.Y = MathHelper.Clamp(this.Y, playerAnimation.FrameHeight, activeGame.GraphicsDevice.Viewport.Height);
 
             playerAnimation.Update(gameTime);
         }

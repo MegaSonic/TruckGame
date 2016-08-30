@@ -74,8 +74,8 @@ namespace TruckGame
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             Animation playerAnimation = new Animation();
-            Texture2D playerTexture = Content.Load<Texture2D>("truck_sheet");
-            playerAnimation.Initialize(playerTexture, Vector2.Zero, 111, 92, 2, 1000, Color.White, 1f, true );
+            Texture2D playerTexture = Content.Load<Texture2D>("player");
+            playerAnimation.Initialize(playerTexture, Vector2.Zero, 32, 32, 1, 1000, Color.White, 1f, true );
 
             Vector2 playerPosition = new Vector2(GraphicsDevice.Viewport.TitleSafeArea.X + GraphicsDevice.Viewport.TitleSafeArea.Width / 2, GraphicsDevice.Viewport.TitleSafeArea.Y + GraphicsDevice.Viewport.TitleSafeArea.Height / 2);
             player.Start(this, playerAnimation, playerPosition);
