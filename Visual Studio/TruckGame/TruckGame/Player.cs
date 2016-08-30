@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace TruckGame
 {
-    class Player : GameObject
+    public class Player : GameObject
     {
         // public Texture2D PlayerTexture;
         public Animation playerAnimation;

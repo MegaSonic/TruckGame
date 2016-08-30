@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace TruckGame
 {
-    class Animation
+    public class Animation
     {
         Texture2D spriteStrip;
         public float scale;

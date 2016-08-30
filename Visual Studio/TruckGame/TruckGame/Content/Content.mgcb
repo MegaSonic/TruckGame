@@ -49,3 +49,9 @@
 /processorParam:TextureFormat=Color
 /build:bg_arena.png
 
+#begin Timer.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:TextureFormat=Compressed
+/build:Timer.spritefont
+

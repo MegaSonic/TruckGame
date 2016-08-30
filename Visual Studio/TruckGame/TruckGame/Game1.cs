@@ -21,8 +21,9 @@ namespace TruckGame
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        Player player;
-        
+        public Player player;
+        public Timer timer;
+
         public KeyboardState currentKeyboardState;
         public KeyboardState previousKeyboardState;
 
@@ -55,7 +56,10 @@ namespace TruckGame
             // TODO: Add your initialization logic here
             objectsInScene = new List<GameObject>();
             player = new Player();
+            timer = new Timer(this);
+            
             objectsInScene.Add(player);
+            objectsInScene.Add(timer);
 
             TouchPanel.EnabledGestures = GestureType.FreeDrag;
 
