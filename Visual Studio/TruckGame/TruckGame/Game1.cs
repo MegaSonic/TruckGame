@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace TruckGame
 {
@@ -42,8 +43,8 @@ namespace TruckGame
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
-            graphics.PreferredBackBufferWidth = 1920;
-            graphics.PreferredBackBufferHeight = 1080;
+            graphics.PreferredBackBufferWidth = 1024;
+            graphics.PreferredBackBufferHeight = 768;
             Content.RootDirectory = "Content";
         }
 
@@ -124,6 +125,28 @@ namespace TruckGame
             }
 
             CheckCollisions();
+
+            if (currentKeyboardState.IsKeyDown(Keys.Z) && previousKeyboardState.IsKeyUp(Keys.Z))
+            {
+                Vector2 center = new Vector2(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2);
+                Vector2 topLeft = new Vector2(0f, 0f);
+                Vector2 distance = center - topLeft;
+                
+                distance *= 3 / 2;
+                Random rand = new Random();
+                Matrix rotMatrix = Matrix.CreateRotationZ((float) rand.Next(360));
+                distance = Vector2.Transform(distance, rotMatrix);
+                Vector2 truckSpawnPoint = center - distance;
+
+                Truck truck = new Truck(this, truckSpawnPoint);
+                truck.startPosition = truckSpawnPoint;
+                truck.targetPosition = player.Position;
+                truck.Rotation = (float) (3 * Math.PI / 2 + VectorToAngle(truck.startPosition - truck.targetPosition));
+                Debug.WriteLine(truck.Rotation);
+                objectsInScene.Add(truck);
+                //Debug.WriteLine(objectsInScene.Count);
+                //Debug.WriteLine("Spawn Point: " + truckSpawnPoint.X + ", " + truckSpawnPoint.Y + "... " + truck.targetPosition.X + " ," + truck.targetPosition.Y);
+            }
 
             //UpdatePlayer(gameTime);
 
@@ -213,6 +236,11 @@ namespace TruckGame
             timer.playerTime = 0f;
             player.Position = new Vector2(GraphicsDevice.Viewport.TitleSafeArea.X + GraphicsDevice.Viewport.TitleSafeArea.Width / 2, GraphicsDevice.Viewport.TitleSafeArea.Y + GraphicsDevice.Viewport.TitleSafeArea.Height / 2);
             // Figure out how to reset game here
+        }
+
+        public float VectorToAngle(Vector2 vector)
+        {
+            return (float)Math.Atan2(vector.X, -vector.Y);
         }
     }
 }
