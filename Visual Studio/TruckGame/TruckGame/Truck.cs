@@ -19,8 +19,8 @@ namespace TruckGame
 
         public Game1 activeGame;
 
-        public float playerMoveSpeed = 150.0f;
-        public float playerTurnSpeed = 1.0f;
+        public float truckMoveSpeed = 150.0f;
+        public float truckTurnSpeed = 1.0f;
 
 
 
