@@ -203,18 +203,18 @@ namespace TruckGame
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
-            spriteBatch.Begin();
-            spriteBatch.Draw(background, new Rectangle(0, 0, background.Width, background.Height), Color.White);
+            spriteBatch.Begin(SpriteSortMode.BackToFront);
+            spriteBatch.Draw(background, new Rectangle(0, 0, background.Width, background.Height), null, Color.White, 0.0f, Vector2.Zero, SpriteEffects.None, 1.0f);
             // player.Draw(spriteBatch);
 
             foreach (GameObject go in objectsInScene)
             {
-                if (go.tag == "Player") continue;
+                // if (go.tag == "Player") continue;
                 go.Draw(spriteBatch);
                 
             }
 
-            player.Draw(spriteBatch);
+            // player.Draw(spriteBatch);
             spriteBatch.End();
             
 

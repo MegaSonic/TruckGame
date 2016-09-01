@@ -43,7 +43,7 @@ namespace TruckGame
 
             truckAnimation = new Animation();
             truckAnimation.Initialize(truckTexture, Vector2.Zero, 111, 92, 1, 1000, Color.White, 1f, true);
-
+            truckAnimation.depth = 0.5f;
             this.Position = position;
             active = true;
             health = 100;
@@ -74,6 +74,7 @@ namespace TruckGame
                     truckAnimation = new Animation();
                     truckAnimation.Initialize(damagedTruck, this.Position, 111, 92, 1, 1000, new Color(0.5f, 0.5f, 0.5f, 1.0f), 1f, true);
                     truckAnimation.angle = Rotation + (float) Math.PI;
+                    truckAnimation.depth = 0.5f;
 
                 }
             }
@@ -104,6 +105,7 @@ namespace TruckGame
                         truckAnimation = new Animation();
                         truckAnimation.Initialize(damagedTruck, this.Position, 111, 92, 1, 1000, new Color(0.5f, 0.5f, 0.5f, 1.0f), 1f, true);
                         truckAnimation.angle = Rotation + (float)Math.PI;
+                        truckAnimation.depth = 0.5f;
 
                     }
                 }
