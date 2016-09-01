@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Input.Touch;
+using Microsoft.Xna.Framework.Media;
 
 using System;
 using System.Collections.Generic;
@@ -12,9 +13,6 @@ using System.Diagnostics;
 
 namespace TruckGame
 {
-    
-
-
     /// <summary>
     /// This is the main type for your game.
     /// </summary>
@@ -34,6 +32,7 @@ namespace TruckGame
 
         public GamePadState currentGamePadState;
         public GamePadState previousGamePadState;
+        Song bgmusic;
 
         MouseState currentMouseState;
         MouseState previousMouseState;
@@ -80,6 +79,11 @@ namespace TruckGame
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            this.bgmusic = Content.Load<Song>("BG Music");
+            MediaPlayer.Play(bgmusic);
+            MediaPlayer.IsRepeating = true;
+            MediaPlayer.MediaStateChanged += MediaPlayer_MediaStateChanged;
+
             Animation playerAnimation = new Animation();
             Texture2D playerTexture = Content.Load<Texture2D>("player");
             playerAnimation.Initialize(playerTexture, Vector2.Zero, 32, 32, 1, 1000, Color.White, 1f, true );
@@ -89,6 +93,13 @@ namespace TruckGame
             
             background = Content.Load<Texture2D>("bg_arena");
             // TODO: use this.Content to load your game content here
+        }
+
+        void MediaPlayer_MediaStateChanged(object sender, System.EventArgs e)
+        {
+            // 0.0f is silent, 1.0f is full volume
+            MediaPlayer.Volume -= 0.1f;
+            MediaPlayer.Play(bgmusic);
         }
 
         /// <summary>

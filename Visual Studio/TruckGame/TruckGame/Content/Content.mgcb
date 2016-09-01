@@ -55,3 +55,9 @@
 /processorParam:TextureFormat=Compressed
 /build:Timer.spritefont
 
+#begin BG Music.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:BG Music.mp3
+
