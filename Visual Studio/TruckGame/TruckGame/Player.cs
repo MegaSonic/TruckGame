@@ -21,7 +21,7 @@ namespace TruckGame
 
         public Game1 activeGame;
 
-        public float playerMoveSpeed = 150.0f;
+        public float playerMoveSpeed = 300.0f;
         public float playerTurnSpeed = 1.0f;
 
         public Player()
