@@ -72,7 +72,7 @@ namespace TruckGame
                     isDestroyed = true;
                     // Truck is destroyed
                     truckAnimation = new Animation();
-                    truckAnimation.Initialize(damagedTruck, this.Position, 111, 92, 1, 1000, Color.White, 1f, true);
+                    truckAnimation.Initialize(damagedTruck, this.Position, 111, 92, 1, 1000, new Color(0.5f, 0.5f, 0.5f, 1.0f), 1f, true);
                     truckAnimation.angle = Rotation + (float) Math.PI;
 
                 }
@@ -98,12 +98,12 @@ namespace TruckGame
                 {
                     if (this.X < 0 || this.X > activeGame.GraphicsDevice.Viewport.Width || this.Y < 0 || this.Y > activeGame.GraphicsDevice.Viewport.Height)
                     {
-                        // Debug.WriteLine("is destroyed");
+                        Debug.WriteLine("is destroyed");
                         isDestroyed = true;
                         // Truck is destroyed
                         truckAnimation = new Animation();
-                        truckAnimation.Initialize(damagedTruck, this.Position, 111, 92, 1, 1000, Color.White, 1f, true);
-                        truckAnimation.angle = Rotation + (float) Math.PI;
+                        truckAnimation.Initialize(damagedTruck, this.Position, 111, 92, 1, 1000, new Color(0.5f, 0.5f, 0.5f, 1.0f), 1f, true);
+                        truckAnimation.angle = Rotation + (float)Math.PI;
 
                     }
                 }
@@ -114,18 +114,16 @@ namespace TruckGame
                 this.X += normalized.X * deltaTime;
                 this.Y += normalized.Y * deltaTime;
 
-                if (justSpawned)
+                if (this.X > 5 && this.X < activeGame.GraphicsDevice.Viewport.Width - 5 && this.Y > 5 && this.Y < activeGame.GraphicsDevice.Viewport.Height - 5)
                 {
-                    if (this.X > 5 && this.X < activeGame.GraphicsDevice.Viewport.Width - 5 && this.Y > 5 && this.Y < activeGame.GraphicsDevice.Viewport.Height - 5)
-                    {
-                        // Truck is in bounds
-                        isInvincible = false;
-                    }
+                    // Truck is in bounds
+                    isInvincible = false;
                 }
+
             }
             else
             {
-                
+
             }
 
 

@@ -37,7 +37,7 @@ namespace TruckGame
             health = 100;
             activeGame = game;
             tag = "Player";
-            playerAnimation.depth = 1.0f;
+            playerAnimation.depth = 0.0f;
         }
 
         public override void Update(GameTime gameTime)

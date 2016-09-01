@@ -79,6 +79,7 @@ namespace TruckGame
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            
             this.bgmusic = Content.Load<Song>("BG Music");
             MediaPlayer.Play(bgmusic);
             MediaPlayer.IsRepeating = true;
@@ -208,9 +209,12 @@ namespace TruckGame
 
             foreach (GameObject go in objectsInScene)
             {
+                if (go.tag == "Player") continue;
                 go.Draw(spriteBatch);
+                
             }
 
+            player.Draw(spriteBatch);
             spriteBatch.End();
             
 
