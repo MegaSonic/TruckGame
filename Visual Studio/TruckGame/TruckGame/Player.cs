@@ -170,15 +170,15 @@ namespace TruckGame
         {
             if (collidedWith.tag == "Truck" )
             {
-                ICollideable possibleCollideable = collidedWith as ICollideable;
-                if (possibleCollideable != null)
-                {
-                    if (possibleCollideable.IsCurrentlyCollideable)
-                    {
+                //ICollideable possibleCollideable = collidedWith as ICollideable;
+                //if (possibleCollideable != null)
+                //{
+                    //if (possibleCollideable.IsCurrentlyCollideable)
+                    //{
                         // Kill the player
                         activeGame.Reset();
-                    }
-                }
+                    //}
+                //}
 
             }
         }

@@ -182,14 +182,14 @@ namespace TruckGame
                     ICollideable secondCollideable = objectsInScene[j] as ICollideable;
                     if (secondCollideable == null) continue;
                     if (!secondCollideable.IsCurrentlyCollideable) continue;
-                    else
+
+
+                    if (possibleCollideable.BoundingBox.Intersects(secondCollideable.BoundingBox))
                     {
-                        if (possibleCollideable.BoundingBox.Intersects(secondCollideable.BoundingBox))
-                        {
-                            possibleCollideable.Collided(objectsInScene[j]);
-                            secondCollideable.Collided(objectsInScene[i]);
-                        }
+                        possibleCollideable.Collided(objectsInScene[j]);
+                        secondCollideable.Collided(objectsInScene[i]);
                     }
+                    
 
                 }
             }

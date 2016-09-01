@@ -68,13 +68,7 @@ namespace TruckGame
             {
                 if (collidedWith.tag == "Truck")
                 {
-                    // Debug.WriteLine("is destroyed");
-                    isDestroyed = true;
-                    // Truck is destroyed
-                    truckAnimation = new Animation();
-                    truckAnimation.Initialize(damagedTruck, this.Position, 111, 92, 1, 1000, new Color(0.5f, 0.5f, 0.5f, 1.0f), 1f, true);
-                    truckAnimation.angle = Rotation + (float) Math.PI;
-                    truckAnimation.depth = 0.5f;
+                    Destroy();
 
                 }
             }
@@ -97,15 +91,10 @@ namespace TruckGame
 
                 if (!isInvincible)
                 {
+                    // Ram into the wall here
                     if (this.X - truckAnimation.FrameWidth / 2 < 0 || this.X > activeGame.GraphicsDevice.Viewport.Width || this.Y - truckAnimation.FrameWidth / 2 < 0 || this.Y > activeGame.GraphicsDevice.Viewport.Height)
                     {
-                        Debug.WriteLine("is destroyed");
-                        isDestroyed = true;
-                        // Truck is destroyed
-                        truckAnimation = new Animation();
-                        truckAnimation.Initialize(damagedTruck, this.Position, 111, 92, 1, 1000, new Color(0.5f, 0.5f, 0.5f, 1.0f), 1f, true);
-                        truckAnimation.angle = Rotation + (float)Math.PI;
-                        truckAnimation.depth = 0.5f;
+                        Destroy();
 
                     }
                 }
@@ -134,6 +123,17 @@ namespace TruckGame
             // Debug.WriteLine(this.Position.X + ", " + this.Position.Y);
 
             truckAnimation.Update(gameTime);
+        }
+
+        public void Destroy()
+        {
+            Debug.WriteLine("is destroyed");
+            isDestroyed = true;
+            // Truck is destroyed
+            truckAnimation = new Animation();
+            truckAnimation.Initialize(damagedTruck, this.Position, 111, 92, 1, 1000, new Color(0.5f, 0.5f, 0.5f, 1.0f), 1f, true);
+            truckAnimation.angle = Rotation + (float)Math.PI;
+            truckAnimation.depth = 0.5f;
         }
 
         public bool IsCurrentlyCollideable
