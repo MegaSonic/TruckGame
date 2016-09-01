@@ -43,7 +43,7 @@ namespace TruckGame
 
             truckAnimation = new Animation();
             truckAnimation.Initialize(truckTexture, Vector2.Zero, 111, 92, 1, 1000, Color.White, 1f, true);
-            truckAnimation.depth = 0.5f;
+            truckAnimation.depth = 0.3f;
             this.Position = position;
             active = true;
             health = 100;
