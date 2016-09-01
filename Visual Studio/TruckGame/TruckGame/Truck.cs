@@ -97,7 +97,7 @@ namespace TruckGame
 
                 if (!isInvincible)
                 {
-                    if (this.X < 0 || this.X > activeGame.GraphicsDevice.Viewport.Width || this.Y < 0 || this.Y > activeGame.GraphicsDevice.Viewport.Height)
+                    if (this.X - truckAnimation.FrameWidth / 2 < 0 || this.X > activeGame.GraphicsDevice.Viewport.Width || this.Y - truckAnimation.FrameWidth / 2 < 0 || this.Y > activeGame.GraphicsDevice.Viewport.Height)
                     {
                         Debug.WriteLine("is destroyed");
                         isDestroyed = true;
@@ -116,7 +116,7 @@ namespace TruckGame
                 this.X += normalized.X * deltaTime;
                 this.Y += normalized.Y * deltaTime;
 
-                if (this.X > 5 && this.X < activeGame.GraphicsDevice.Viewport.Width - 5 && this.Y > 5 && this.Y < activeGame.GraphicsDevice.Viewport.Height - 5)
+                if (this.X > 0 + truckAnimation.FrameWidth / 2 && this.X < activeGame.GraphicsDevice.Viewport.Width && this.Y > 0 + truckAnimation.FrameWidth / 2 && this.Y < activeGame.GraphicsDevice.Viewport.Height - 0)
                 {
                     // Truck is in bounds
                     isInvincible = false;
