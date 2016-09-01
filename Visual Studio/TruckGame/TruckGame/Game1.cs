@@ -153,7 +153,6 @@ namespace TruckGame
                 truck.startPosition = truckSpawnPoint;
                 truck.targetPosition = player.Position;
                 truck.Rotation = (float) (3 * Math.PI / 2 + VectorToAngle(truck.startPosition - truck.targetPosition));
-                Debug.WriteLine(truck.Rotation);
                 objectsInScene.Add(truck);
                 //Debug.WriteLine(objectsInScene.Count);
                 //Debug.WriteLine("Spawn Point: " + truckSpawnPoint.X + ", " + truckSpawnPoint.Y + "... " + truck.targetPosition.X + " ," + truck.targetPosition.Y);
@@ -172,18 +171,21 @@ namespace TruckGame
             {
                 ICollideable possibleCollideable = objectsInScene[i] as ICollideable;
 
-                if (possibleCollideable == null) continue;
+                if (possibleCollideable == null ) continue;
+                if (!possibleCollideable.IsCurrentlyCollideable) continue;
 
-                for (int j = i + 1; i < objectsInScene.Count; i++)
+                for (int j = i + 1; j < objectsInScene.Count; j++)
                 {
-
+                    
                     ICollideable secondCollideable = objectsInScene[j] as ICollideable;
                     if (secondCollideable == null) continue;
+                    if (!secondCollideable.IsCurrentlyCollideable) continue;
                     else
                     {
                         if (possibleCollideable.BoundingBox.Intersects(secondCollideable.BoundingBox))
                         {
                             possibleCollideable.Collided(objectsInScene[j]);
+                            secondCollideable.Collided(objectsInScene[i]);
                         }
                     }
 

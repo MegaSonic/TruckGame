@@ -15,6 +15,11 @@ namespace TruckGame
             get;
         }
 
+        bool IsCurrentlyCollideable
+        {
+            get;
+        }
+
         void Collided(GameObject collidedWith);
 
     }

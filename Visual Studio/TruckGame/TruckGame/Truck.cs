@@ -11,9 +11,10 @@ namespace TruckGame
 {
     public class Truck : GameObject, ICollideable
     {
-        public bool isInvincible;
+        public bool isInvincible = true;
 
         public static Texture2D truckTexture;
+        public static Texture2D damagedTruck;
 
         public Animation truckAnimation;
 
@@ -23,8 +24,10 @@ namespace TruckGame
         public bool justSpawned = true;
 
         public Game1 activeGame;
+        public bool isDestroyed = false;
 
         public float truckMoveSpeed = 400.0f;
+        public float rotation;
 
         public Vector2 startPosition;
         public Vector2 targetPosition;
@@ -35,6 +38,7 @@ namespace TruckGame
             if (truckTexture == null)
             {
                 truckTexture = game.Content.Load<Texture2D>("truck_sheet");
+                damagedTruck = game.Content.Load<Texture2D>("monster_truck_damaged");
             }
 
             truckAnimation = new Animation();
@@ -59,9 +63,19 @@ namespace TruckGame
 
         public void Collided(GameObject collidedWith)
         {
-            if (!isInvincible)
+            // Debug.WriteLine("Collided");
+            if (!isInvincible || !isDestroyed)
             {
+                if (collidedWith.tag == "Truck")
+                {
+                    // Debug.WriteLine("is destroyed");
+                    isDestroyed = true;
+                    // Truck is destroyed
+                    truckAnimation = new Animation();
+                    truckAnimation.Initialize(damagedTruck, this.Position, 111, 92, 1, 1000, Color.White, 1f, true);
+                    truckAnimation.angle = Rotation + (float) Math.PI;
 
+                }
             }
         }
 
@@ -71,29 +85,64 @@ namespace TruckGame
             truckAnimation.Draw(spriteBatch);
         }
 
+
+
         public override void Update(GameTime gameTime)
         {
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            Vector2 normalized = Vector2.Normalize(targetPosition - startPosition);
-            normalized *= truckMoveSpeed;
-            this.X += normalized.X * deltaTime;
-            this.Y += normalized.Y * deltaTime;
-
-            if (justSpawned == true)
+            if (!isDestroyed)
             {
-                if (this.X > 0 && this.X < activeGame.GraphicsDevice.Viewport.Width && this.Y > 0 && this.Y < activeGame.GraphicsDevice.Viewport.Height)
+
+                if (!isInvincible)
                 {
-                    // Truck is in bounds
-                    isInvincible = false;
+                    if (this.X < 0 || this.X > activeGame.GraphicsDevice.Viewport.Width || this.Y < 0 || this.Y > activeGame.GraphicsDevice.Viewport.Height)
+                    {
+                        // Debug.WriteLine("is destroyed");
+                        isDestroyed = true;
+                        // Truck is destroyed
+                        truckAnimation = new Animation();
+                        truckAnimation.Initialize(damagedTruck, this.Position, 111, 92, 1, 1000, Color.White, 1f, true);
+                        truckAnimation.angle = Rotation + (float) Math.PI;
+
+                    }
+                }
+
+
+                Vector2 normalized = Vector2.Normalize(targetPosition - startPosition);
+                normalized *= truckMoveSpeed;
+                this.X += normalized.X * deltaTime;
+                this.Y += normalized.Y * deltaTime;
+
+                if (justSpawned)
+                {
+                    if (this.X > 5 && this.X < activeGame.GraphicsDevice.Viewport.Width - 5 && this.Y > 5 && this.Y < activeGame.GraphicsDevice.Viewport.Height - 5)
+                    {
+                        // Truck is in bounds
+                        isInvincible = false;
+                    }
                 }
             }
+            else
+            {
+                
+            }
+
 
             // Debug.WriteLine("Animation: " + truckAnimation.Position.X + ", " + truckAnimation.Position.Y);
 
             // Debug.WriteLine(this.Position.X + ", " + this.Position.Y);
 
             truckAnimation.Update(gameTime);
+        }
+
+        public bool IsCurrentlyCollideable
+        {
+            get
+            {
+                if (isDestroyed || isInvincible) return false;
+                else return true;
+            }
         }
 
         public int Width
@@ -126,8 +175,8 @@ namespace TruckGame
 
         public float Rotation
         {
-            get { return truckAnimation.angle; }
-            set { truckAnimation.angle = value; }
+            get { return rotation; }
+            set { rotation = value;  truckAnimation.angle = value; }
         }
 
         

@@ -37,6 +37,7 @@ namespace TruckGame
             health = 100;
             activeGame = game;
             tag = "Player";
+            playerAnimation.depth = 1.0f;
         }
 
         public override void Update(GameTime gameTime)
@@ -157,11 +158,28 @@ namespace TruckGame
             }
         }
 
+        public bool IsCurrentlyCollideable
+        {
+            get
+            {
+                return true;
+            }
+        }
+
         public void Collided(GameObject collidedWith)
         {
             if (collidedWith.tag == "Truck" )
             {
-                // Kill the player
+                ICollideable possibleCollideable = collidedWith as ICollideable;
+                if (possibleCollideable != null)
+                {
+                    if (possibleCollideable.IsCurrentlyCollideable)
+                    {
+                        // Kill the player
+                        activeGame.Reset();
+                    }
+                }
+
             }
         }
     }
