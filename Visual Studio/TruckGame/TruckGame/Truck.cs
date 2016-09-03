@@ -61,17 +61,17 @@ namespace TruckGame
             }
         }
 
-        public void Collided(GameObject collidedWith)
+        public Boolean Collided(GameObject collidedWith)
         {
             // Debug.WriteLine("Collided");
             if (!isInvincible || !isDestroyed)
             {
                 if (collidedWith.tag == "Truck")
                 {
-                    Destroy();
-
+                    Destroy();                    
                 }
             }
+            return false;
         }
 
 

@@ -20,7 +20,8 @@ namespace TruckGame
             get;
         }
 
-        void Collided(GameObject collidedWith);
+        Boolean Collided(GameObject collidedWith);
+        
 
     }
 }

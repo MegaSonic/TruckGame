@@ -166,21 +166,14 @@ namespace TruckGame
             }
         }
 
-        public void Collided(GameObject collidedWith)
+        public Boolean Collided(GameObject collidedWith)
         {
             if (collidedWith.tag == "Truck" )
             {
-                //ICollideable possibleCollideable = collidedWith as ICollideable;
-                //if (possibleCollideable != null)
-                //{
-                    //if (possibleCollideable.IsCurrentlyCollideable)
-                    //{
-                        // Kill the player
-                        activeGame.Reset();
-                    //}
-                //}
-
+                return true;
+                //activeGame.Reset();               
             }
+            return false;
         }
     }
 }

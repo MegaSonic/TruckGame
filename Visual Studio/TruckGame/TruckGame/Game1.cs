@@ -13,9 +13,12 @@ using System.Diagnostics;
 
 namespace TruckGame
 {
+
     /// <summary>
     /// This is the main type for your game.
     /// </summary>
+
+    
     public class Game1 : Game
     {
         GraphicsDeviceManager graphics;
@@ -23,12 +26,16 @@ namespace TruckGame
         public Player player;
         public Timer timer;
 
+        Button GameStart, GameExit, GameRestart;
+
         public KeyboardState currentKeyboardState;
         public KeyboardState previousKeyboardState;
 
         public List<GameObject> objectsInScene;
 
         Texture2D background;
+        Texture2D gsBackground;
+        Texture2D goBackground;
 
         public GamePadState currentGamePadState;
         public GamePadState previousGamePadState;
@@ -37,14 +44,14 @@ namespace TruckGame
         MouseState currentMouseState;
         MouseState previousMouseState;
 
-        
+        GameState _state;
 
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             graphics.PreferredBackBufferWidth = 1920;
             graphics.PreferredBackBufferHeight = 1080;
-            graphics.IsFullScreen = true;
+            //graphics.IsFullScreen = true;
             Content.RootDirectory = "Content";
         }
 
@@ -57,16 +64,19 @@ namespace TruckGame
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            spriteBatch = new SpriteBatch(GraphicsDevice);
             objectsInScene = new List<GameObject>();
             player = new Player();
             timer = new Timer(this);
             
             objectsInScene.Add(player);
             objectsInScene.Add(timer);
-
+            this.IsMouseVisible = true;
             TouchPanel.EnabledGestures = GestureType.FreeDrag;
 
-
+            GameStart = new Button("Start", 100, 200);
+            GameExit = new Button("Exit", 100, 300);
+            GameRestart = new Button("Restart", 100, 400);
             // I think this always goes last?
             base.Initialize();
         }
@@ -78,7 +88,7 @@ namespace TruckGame
         protected override void LoadContent()
         {
             // Create a new SpriteBatch, which can be used to draw textures.
-            spriteBatch = new SpriteBatch(GraphicsDevice);
+            
 
             
             this.bgmusic = Content.Load<Song>("BG Music");
@@ -92,8 +102,14 @@ namespace TruckGame
 
             Vector2 playerPosition = new Vector2(GraphicsDevice.Viewport.TitleSafeArea.X + GraphicsDevice.Viewport.TitleSafeArea.Width / 2, GraphicsDevice.Viewport.TitleSafeArea.Y + GraphicsDevice.Viewport.TitleSafeArea.Height / 2);
             player.Start(this, playerAnimation, playerPosition);
-            
+
+            GameStart.texture = Content.Load<Texture2D>("monster_truck");
+            GameExit.texture = Content.Load<Texture2D>("monster_truck");
+            GameRestart.texture = Content.Load<Texture2D>("mario");
             background = Content.Load<Texture2D>("bg_arena");
+            gsBackground = Content.Load<Texture2D>("bg_arena");
+            goBackground = Content.Load<Texture2D>("bg_arena");
+
             // TODO: use this.Content to load your game content here
         }
 
@@ -122,8 +138,40 @@ namespace TruckGame
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+            base.Update(gameTime);
+            switch (_state)
+            {
+                case GameState.MainMenu:
+                    UpdateMainMenu(gameTime);
+                    break;
+
+                case GameState.GamePlay:
+                    UpdateGamePlay(gameTime);
+                    break;
+
+                case GameState.EndOfGame:
+                    UpdateEndOfGame(gameTime);
+                    break;
+
+            }
+        }
+
+        protected void UpdateMainMenu(GameTime gameTime)
+        {
+          if(GameStart.enterButton()&& Mouse.GetState().LeftButton == ButtonState.Released && Mouse.GetState().LeftButton == ButtonState.Pressed)
+            {
+                _state = GameState.GamePlay;
+            }
+          else if(GameExit.enterButton() && Mouse.GetState().LeftButton == ButtonState.Released && Mouse.GetState().LeftButton == ButtonState.Pressed)
+            {
                 Exit();
+            }
+        }
+
+        protected void UpdateGamePlay(GameTime gameTime)
+        {
+            //if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+             //   Exit();
 
             // TODO: Add your update logic here
             previousGamePadState = currentGamePadState;
@@ -137,7 +185,10 @@ namespace TruckGame
                 go.Update(gameTime);
             }
 
-            CheckCollisions();
+            if(CheckCollisions())
+            {
+                _state = GameState.EndOfGame;
+            }
 
             if (currentKeyboardState.IsKeyDown(Keys.Z) && previousKeyboardState.IsKeyUp(Keys.Z))
             {
@@ -166,7 +217,7 @@ namespace TruckGame
             base.Update(gameTime);
         }
 
-        private void CheckCollisions()
+        private Boolean CheckCollisions()
         {
             // Detect collisions
             for (int i = 0; i < objectsInScene.Count; i++)
@@ -186,21 +237,71 @@ namespace TruckGame
 
                     if (possibleCollideable.BoundingBox.Intersects(secondCollideable.BoundingBox))
                     {
-                        possibleCollideable.Collided(objectsInScene[j]);
-                        secondCollideable.Collided(objectsInScene[i]);
-                    }
-                    
+                        if(possibleCollideable.Collided(objectsInScene[j])|| secondCollideable.Collided(objectsInScene[i]))
+                        {
+                            return true;
+                        }
+                    }                   
 
                 }
             }
+            return false;
         }
-        
+
+        protected void UpdateEndOfGame(GameTime gameTime)
+        {
+            if(GameRestart.enterButton() && Mouse.GetState().LeftButton == ButtonState.Released && Mouse.GetState().LeftButton == ButtonState.Pressed)
+            {
+                _state = GameState.GamePlay;
+            }
+            else
+            {
+                Exit();
+            }
+        }
+
+
         /// <summary>
         /// This is called when the game should draw itself.
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
+            //base.Draw(gameTime);
+            spriteBatch.Begin();
+            switch (_state)
+            {
+                case GameState.MainMenu:
+                    DrawMainMenu(gameTime);
+                    break;
+
+                case GameState.GamePlay:
+                    DrawGameplay(gameTime);
+                    break;
+                case GameState.EndOfGame:
+                    DrawEndOfGame(gameTime);
+                    break;
+
+            }
+            spriteBatch.End();
+            base.Draw(gameTime);
+
+        }
+
+        void DrawMainMenu(GameTime gameTime)
+        {
+            
+            //spriteBatch.Begin();
+            //spriteBatch.Begin(SpriteSortMode.BackToFront);
+            spriteBatch.Draw(gsBackground, new Rectangle(0, 0, background.Width, background.Height), null, Color.White, 0.0f, Vector2.Zero, SpriteEffects.None, 1.0f);
+            spriteBatch.Draw(GameStart.texture, new Rectangle(400, 800, GameStart.texture.Width, GameStart.texture.Height),null,Color.White,0.5f,Vector2.Zero, SpriteEffects.None,1.0f);
+            //base.Draw(gameTime);
+        }
+
+
+        void DrawGameplay(GameTime gameTime)
+        { 
+
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
@@ -216,12 +317,21 @@ namespace TruckGame
             }
 
             // player.Draw(spriteBatch);
-            spriteBatch.End();
+            
             
 
-            base.Draw(gameTime);
+            
         }
 
+
+        void DrawEndOfGame(GameTime gameTime)
+        {
+            spriteBatch.Begin(SpriteSortMode.BackToFront);
+            spriteBatch.Draw(goBackground, new Rectangle(0, 0, background.Width, background.Height), null, Color.White, 0.0f, Vector2.Zero, SpriteEffects.None, 1.0f);
+            spriteBatch.Draw(GameExit.texture, new Rectangle(800, 450 + GameStart.texture.Width, GameExit.texture.Width, GameExit.texture.Height), null, Color.White, 0.5f, Vector2.Zero, SpriteEffects.None, 1.0f);
+            spriteBatch.Draw(GameRestart.texture, new Rectangle(800, 400, GameStart.texture.Width, GameStart.texture.Height), null, Color.White, 0.5f, Vector2.Zero, SpriteEffects.None, 1.0f);
+            //base.Draw(gameTime);
+        }
         public GameObject FindGameObjectByTag(string tag)
         {
             foreach (GameObject go in objectsInScene)

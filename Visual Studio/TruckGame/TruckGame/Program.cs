@@ -2,6 +2,13 @@
 
 namespace TruckGame
 {
+    public enum GameState
+    {
+        MainMenu,
+        GamePlay,
+        EndOfGame,
+    }
+
 #if WINDOWS || LINUX
     /// <summary>
     /// The main class.
