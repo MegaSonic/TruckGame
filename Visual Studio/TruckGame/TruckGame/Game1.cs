@@ -31,6 +31,7 @@ namespace TruckGame
         public KeyboardState previousKeyboardState;
 
         public List<GameObject> objectsInScene;
+        public List<GameObject> objectsToRemove;
 
         Texture2D background;
 
@@ -65,6 +66,7 @@ namespace TruckGame
         {
             // TODO: Add your initialization logic here
             objectsInScene = new List<GameObject>();
+            objectsToRemove = new List<GameObject>();
             player = new Player();
             timer = new Timer(this);
             
@@ -138,6 +140,14 @@ namespace TruckGame
 
             currentKeyboardState = Keyboard.GetState();
             currentGamePadState = GamePad.GetState(PlayerIndex.One);
+
+            foreach (GameObject go in objectsToRemove)
+            {
+                if (objectsInScene.Contains(go))
+                {
+                    objectsInScene.Remove(go);
+                }
+            }
 
             foreach (GameObject go in objectsInScene)
             {

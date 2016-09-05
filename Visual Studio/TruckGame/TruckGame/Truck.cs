@@ -16,6 +16,9 @@ namespace TruckGame
         public static Texture2D truckTexture;
         public static Texture2D damagedTruck;
 
+        public static int CrashedTrucks = 0;
+        public float crashedTruckSpeedIncrease = 5f;
+
         public Animation truckAnimation;
 
         public bool active;
@@ -108,7 +111,7 @@ namespace TruckGame
 
 
                 Vector2 normalized = Vector2.Normalize(targetPosition - startPosition);
-                normalized *= truckMoveSpeed;
+                normalized *= (truckMoveSpeed + Truck.CrashedTrucks * crashedTruckSpeedIncrease);
                 this.X += normalized.X * deltaTime;
                 this.Y += normalized.Y * deltaTime;
 
@@ -149,6 +152,7 @@ namespace TruckGame
             truckAnimation.Initialize(damagedTruck, this.Position, 111, 92, 1, 1000, new Color(0.5f, 0.5f, 0.5f, 1.0f), 1f, true);
             truckAnimation.angle = Rotation + (float)Math.PI;
             truckAnimation.depth = 0.5f;
+            Truck.CrashedTrucks++;
         }
 
         public bool IsCurrentlyCollideable
