@@ -90,8 +90,12 @@ namespace TruckGame
             sourceRect = new Rectangle(currentFrame * FrameWidth, 0, FrameWidth, FrameHeight);
 
             // Grab the correct frame in the image strip by multiplying the currentFrame index by the frame width
+            //destinationRect.X = (int)(Position.X - (FrameWidth * scale) / 2);
+            //destinationRect.Y = (int)(Position.Y - (FrameHeight * scale) / 2);
+
             destinationRect.X = (int)(Position.X - (FrameWidth * scale) / 2);
             destinationRect.Y = (int)(Position.Y - (FrameHeight * scale) / 2);
+
             destinationRect.Width = (int)(FrameWidth * scale);
             destinationRect.Height = (int)(FrameHeight * scale);
         }

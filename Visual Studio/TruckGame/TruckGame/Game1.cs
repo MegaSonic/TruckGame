@@ -1,4 +1,6 @@
-﻿using Microsoft.Xna.Framework;
+﻿#define DEBUG
+
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Input.Touch;
@@ -10,6 +12,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
+
+
 
 namespace TruckGame
 {
@@ -44,7 +48,10 @@ namespace TruckGame
             graphics = new GraphicsDeviceManager(this);
             graphics.PreferredBackBufferWidth = 1920;
             graphics.PreferredBackBufferHeight = 1080;
+
+#if (!DEBUG)
             graphics.IsFullScreen = true;
+#endif
             Content.RootDirectory = "Content";
         }
 

@@ -1,4 +1,6 @@
-﻿using System;
+﻿#define DEBUG
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +10,8 @@ using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+
+
 
 namespace TruckGame
 {
@@ -23,6 +27,14 @@ namespace TruckGame
 
         public float playerMoveSpeed = 300.0f;
         public float playerTurnSpeed = 1.0f;
+
+        private float dodgeTimer = 0f;
+        public float dodgeCooldownTimer = 0f;
+        public float dodgeLength = 0.16f;
+        public float dodgeCooldownLength = 0.3f;
+        public float dodgeSpeed = 1000.0f;
+
+        public bool isDodgeRolling = false;
 
         public Player()
         {
@@ -43,65 +55,95 @@ namespace TruckGame
         public override void Update(GameTime gameTime)
         {
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
-            
-            this.X += activeGame.currentGamePadState.ThumbSticks.Left.X * playerMoveSpeed * deltaTime;
-            this.Y -= activeGame.currentGamePadState.ThumbSticks.Left.Y * playerMoveSpeed * deltaTime;
 
+#if (DEBUG)
+            Debug.WriteLine(deltaTime);
+#endif
+            if (dodgeTimer > 0f) dodgeTimer -= deltaTime;
+            if (dodgeCooldownTimer > 0f && !isDodgeRolling) dodgeCooldownTimer -= deltaTime;
+
+            if (dodgeTimer < 0f) isDodgeRolling = false;
+
+
+            // this.X += activeGame.currentGamePadState.ThumbSticks.Left.X * playerMoveSpeed * deltaTime;
+            // this.Y -= activeGame.currentGamePadState.ThumbSticks.Left.Y * playerMoveSpeed * deltaTime;
+
+            
             
 
             bool left = false, right = false;
 
             if (activeGame.currentKeyboardState.IsKeyDown(Keys.Left) || activeGame.currentKeyboardState.IsKeyDown(Keys.A) || activeGame.currentGamePadState.DPad.Left == ButtonState.Pressed)
             {
-                this.X -= playerMoveSpeed * deltaTime;
+                if (!isDodgeRolling)
+                {
+                    this.X -= playerMoveSpeed * deltaTime;
+                }
+                else
+                {
+                    this.X -= dodgeSpeed * deltaTime;
+                }
                 Rotation = (float) Math.PI;
                 left = true;
-                //Debug.WriteLine("Left");
             }
 
             if (activeGame.currentKeyboardState.IsKeyDown(Keys.Right) || activeGame.currentKeyboardState.IsKeyDown(Keys.D) || activeGame.currentGamePadState.DPad.Right == ButtonState.Pressed)
             {
-                this.X += playerMoveSpeed * deltaTime;
+                if (!isDodgeRolling)
+                {
+                    this.X += playerMoveSpeed * deltaTime;
+                }
+                else 
+                {
+                    this.X += dodgeSpeed * deltaTime;
+                }
                 Rotation = 0f;
                 right = true;
-                //Debug.WriteLine("Right");
             }
 
             if (activeGame.currentKeyboardState.IsKeyDown(Keys.Up) || activeGame.currentKeyboardState.IsKeyDown(Keys.W) || activeGame.currentGamePadState.DPad.Up == ButtonState.Pressed)
             {
-                this.Y -= playerMoveSpeed * deltaTime;
+                if (!isDodgeRolling)
+                {
+                    this.Y -= playerMoveSpeed * deltaTime;
+                }
+                else
+                {
+                    this.Y -= dodgeSpeed * deltaTime;
+                }
                 Rotation = (float)Math.PI * 3 / 2;
                 if (left) Rotation = (float)Math.PI * 5 / 4;
                 else if (right) Rotation = (float)Math.PI * 7 / 4;
-                //Debug.WriteLine("Up");
             }
 
             if (activeGame.currentKeyboardState.IsKeyDown(Keys.Down) || activeGame.currentKeyboardState.IsKeyDown(Keys.S) || activeGame.currentGamePadState.DPad.Down == ButtonState.Pressed)
             {
-                this.Y += playerMoveSpeed * deltaTime;
+                if (!isDodgeRolling)
+                {
+                    this.Y += playerMoveSpeed * deltaTime;
+                }
+                else
+                {
+                    this.Y += dodgeSpeed * deltaTime;
+                }
                 Rotation = (float) Math.PI / 2;
                 if (left) Rotation = (float) Math.PI * 3/4;
                 else if (right) Rotation = (float)Math.PI * 1 / 4;
-                //Debug.WriteLine("Down");
             }
 
-            if (activeGame.currentKeyboardState.IsKeyDown(Keys.R))
+            // Dodge Roll
+            if (activeGame.currentKeyboardState.IsKeyDown(Keys.Z) && activeGame.previousKeyboardState.IsKeyUp(Keys.Z) && dodgeCooldownTimer <= 0)
             {
-                activeGame.Reset();
+                isDodgeRolling = true;
+                dodgeTimer = dodgeLength;
+                dodgeCooldownTimer = dodgeCooldownLength;
+                
             }
 
-            /*
-            if (activeGame.currentKeyboardState.IsKeyDown(Keys.Q) || activeGame.currentGamePadState.Buttons.LeftShoulder == ButtonState.Pressed)
+            if (activeGame.currentKeyboardState.IsKeyDown(Keys.X) && activeGame.previousKeyboardState.IsKeyUp(Keys.X))
             {
-                this.Rotation -= playerTurnSpeed * deltaTime;
+                // Taunt
             }
-
-            if (activeGame.currentKeyboardState.IsKeyDown(Keys.E) || activeGame.currentGamePadState.Buttons.RightShoulder == ButtonState.Pressed)
-            {
-                this.Rotation += playerTurnSpeed * deltaTime;
-            }
-            */
-            // Debug.WriteLine(this.X + ", " + this.Y);
 
             this.X = MathHelper.Clamp(this.X, playerAnimation.FrameWidth, activeGame.GraphicsDevice.Viewport.Width);
             this.Y = MathHelper.Clamp(this.Y, playerAnimation.FrameHeight, activeGame.GraphicsDevice.Viewport.Height);
@@ -162,8 +204,14 @@ namespace TruckGame
         {
             get
             {
-                return true;
+                if (isDodgeRolling) return false;
+                else return true;
             }
+        }
+
+        public void DodgeRoll()
+        {
+
         }
 
         public void Collided(GameObject collidedWith)
