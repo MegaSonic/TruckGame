@@ -32,6 +32,8 @@ namespace TruckGame
         public Vector2 startPosition;
         public Vector2 targetPosition;
 
+        public bool isTaunted = false;
+
         public Truck(Game1 game, Vector2 position)
         {
             // Debug.WriteLine(truckTexture == null);
@@ -86,6 +88,11 @@ namespace TruckGame
         {
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
+            if (isTaunted)
+            {
+                truckAnimation.color = Color.Red;
+            }
+
             if (!isDestroyed)
             {
 
@@ -123,6 +130,14 @@ namespace TruckGame
             // Debug.WriteLine(this.Position.X + ", " + this.Position.Y);
 
             truckAnimation.Update(gameTime);
+        }
+
+        public void Taunt()
+        {
+            this.targetPosition = activeGame.player.Position;
+            this.startPosition = this.Position;
+            isTaunted = true;
+
         }
 
         public void Destroy()

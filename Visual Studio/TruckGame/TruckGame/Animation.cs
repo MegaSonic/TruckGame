@@ -20,7 +20,7 @@ namespace TruckGame
         int currentFrame;
         public float angle;
 
-        Color color;
+        public Color color;
         Rectangle sourceRect = new Rectangle();
         Rectangle destinationRect = new Rectangle();
         public int FrameWidth;
