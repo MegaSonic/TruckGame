@@ -106,7 +106,7 @@ namespace TruckGame
 
             Animation playerAnimation = new Animation();
             Texture2D playerTexture = Content.Load<Texture2D>("player_walk");
-            playerAnimation.Initialize(playerTexture, Vector2.Zero, 31, 44, 2, 300, Color.White, 1f, true );
+            playerAnimation.Initialize(playerTexture, Vector2.Zero, 31, 44, 2, 300, Color.White, 2f, true );
 
             Vector2 playerPosition = new Vector2(GraphicsDevice.Viewport.TitleSafeArea.X + GraphicsDevice.Viewport.TitleSafeArea.Width / 2, GraphicsDevice.Viewport.TitleSafeArea.Y + GraphicsDevice.Viewport.TitleSafeArea.Height / 2);
             player.Start(this, playerAnimation, playerPosition);
@@ -148,6 +148,13 @@ namespace TruckGame
         protected override void Update(GameTime gameTime)
         {
             currentMouseState = Mouse.GetState();
+            previousGamePadState = currentGamePadState;
+            previousKeyboardState = currentKeyboardState;
+
+            currentKeyboardState = Keyboard.GetState();
+            currentGamePadState = GamePad.GetState(PlayerIndex.One);
+
+
             base.Update(gameTime);
             switch (_state)
             {
@@ -168,7 +175,7 @@ namespace TruckGame
 
         protected void UpdateMainMenu(GameTime gameTime)
         {
-            if (GameStart.enterButton(currentMouseState) && currentMouseState.LeftButton == ButtonState.Pressed /*&& currentMouseState.LeftButton == ButtonState.Released*/)
+            if ((GameStart.enterButton(currentMouseState) && currentMouseState.LeftButton == ButtonState.Pressed) || (previousKeyboardState.IsKeyUp(Keys.Z) && currentKeyboardState.IsKeyDown(Keys.Z)))
             {
                 _state = GameState.GamePlay;
                 UpdateGamePlay(gameTime);
@@ -185,11 +192,7 @@ namespace TruckGame
                 Exit();
 
             // TODO: Add your update logic here
-            previousGamePadState = currentGamePadState;
-            previousKeyboardState = currentKeyboardState;
-
-            currentKeyboardState = Keyboard.GetState();
-            currentGamePadState = GamePad.GetState(PlayerIndex.One);
+            
 
             foreach (GameObject go in objectsToRemove)
             {
@@ -266,14 +269,9 @@ namespace TruckGame
 
         protected void UpdateEndOfGame(GameTime gameTime)
         {
-            previousGamePadState = currentGamePadState;
-            previousKeyboardState = currentKeyboardState;
+            
 
-            currentKeyboardState = Keyboard.GetState();
-
-
-
-            if (GameRestart.enterButton(currentMouseState) &&/* Mouse.GetState().LeftButton == ButtonState.Released &&*/ Mouse.GetState().LeftButton == ButtonState.Pressed)
+            if ((GameRestart.enterButton(currentMouseState) && Mouse.GetState().LeftButton == ButtonState.Pressed) || (previousKeyboardState.IsKeyUp(Keys.Z) && currentKeyboardState.IsKeyDown(Keys.Z)))
             {
                 Reset();
                 _state = GameState.GamePlay;
