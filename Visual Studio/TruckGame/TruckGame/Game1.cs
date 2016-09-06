@@ -50,9 +50,7 @@ namespace TruckGame
             graphics.PreferredBackBufferWidth = 1920;
             graphics.PreferredBackBufferHeight = 1080;
 
-#if (!DEBUG)
             graphics.IsFullScreen = true;
-#endif
             Content.RootDirectory = "Content";
         }
 
@@ -149,6 +147,8 @@ namespace TruckGame
                 }
             }
 
+            objectsToRemove.Clear();
+
             foreach (GameObject go in objectsInScene)
             {
                 go.Update(gameTime);
@@ -156,7 +156,7 @@ namespace TruckGame
 
             CheckCollisions();
 
-            if (currentKeyboardState.IsKeyDown(Keys.Z) && previousKeyboardState.IsKeyUp(Keys.Z))
+            if (currentKeyboardState.IsKeyDown(Keys.A) && previousKeyboardState.IsKeyUp(Keys.A))
             {
                 Vector2 center = new Vector2(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2);
                 Vector2 topLeft = new Vector2(0f, 0f);
