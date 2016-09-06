@@ -91,13 +91,15 @@ namespace TruckGame
         {
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            if (isTaunted)
-            {
-                truckAnimation.color = Color.Red;
-            }
+            
 
             if (!isDestroyed)
             {
+                if (isTaunted)
+                {
+                    truckAnimation.color = Color.Red;
+                }
+
 
                 if (!isInvincible)
                 {
@@ -139,6 +141,7 @@ namespace TruckGame
         {
             this.targetPosition = activeGame.player.Position;
             this.startPosition = this.Position;
+            this.Rotation = (float)(3 * Math.PI / 2 + activeGame.VectorToAngle(this.startPosition - this.targetPosition));
             isTaunted = true;
 
         }

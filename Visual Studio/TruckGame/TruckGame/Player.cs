@@ -29,10 +29,14 @@ namespace TruckGame
         public float playerTurnSpeed = 1.0f;
 
         private float dodgeTimer = 0f;
-        public float dodgeCooldownTimer = 0f;
+        private float dodgeCooldownTimer = 0f;
         public float dodgeLength = 0.16f;
         public float dodgeCooldownLength = 0.3f;
         public float dodgeSpeed = 1000.0f;
+
+        private float tauntTimer = 0f;
+        public float tauntCooldownLength = 1f;
+        public float tauntRadius;
 
         public bool isDodgeRolling = false;
 
@@ -61,7 +65,7 @@ namespace TruckGame
 #endif
             if (dodgeTimer > 0f) dodgeTimer -= deltaTime;
             if (dodgeCooldownTimer > 0f && !isDodgeRolling) dodgeCooldownTimer -= deltaTime;
-
+            if (tauntTimer > 0f) tauntTimer -= deltaTime;
             if (dodgeTimer < 0f) isDodgeRolling = false;
 
 
@@ -140,9 +144,24 @@ namespace TruckGame
                 
             }
 
-            if (activeGame.currentKeyboardState.IsKeyDown(Keys.X) && activeGame.previousKeyboardState.IsKeyUp(Keys.X))
+            // Taunt
+            if (activeGame.currentKeyboardState.IsKeyDown(Keys.X) && activeGame.previousKeyboardState.IsKeyUp(Keys.X) && tauntTimer <= 0)
             {
-                // Taunt
+                tauntTimer = tauntCooldownLength;
+                foreach (GameObject go in activeGame.FindGameObjectsByTag("Truck"))
+                {
+                    Truck truck = go as Truck;
+                    if (truck.isDestroyed)
+                    {
+                        activeGame.objectsToRemove.Add(go);
+                        Truck.CrashedTrucks--;
+                    }
+                    else
+                    {
+                        truck.Taunt();
+                    }
+                }
+
             }
 
             this.X = MathHelper.Clamp(this.X, playerAnimation.FrameWidth, activeGame.GraphicsDevice.Viewport.Width);
