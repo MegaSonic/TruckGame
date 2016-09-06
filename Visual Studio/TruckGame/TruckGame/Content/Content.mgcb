@@ -109,7 +109,9 @@
 /processorParam:TextureFormat=Color
 /build:player_dash.png
 
+
 #begin truck_drive.png
+#begin gameOver_bg.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -122,6 +124,9 @@
 /build:truck_drive.png
 
 #begin truck_crash.png
+/build:gameOver_bg.png
+
+#begin home_bg.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -134,6 +139,9 @@
 /build:truck_crash.png
 
 #begin truck_charge.png
+/build:home_bg.png
+
+#begin play_again_but.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -144,4 +152,30 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:truck_charge.png
+/build:play_again_but.png
+
+#begin start_but.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:start_but.png
+
+#begin esc_but.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:esc_but.png
+>>>>>>> origin/Menus
 

@@ -22,11 +22,14 @@ namespace TruckGame
     /// </summary>
     public class Game1 : Game
     {
+        public GameState _state;
+
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         public Player player;
         public Timer timer;
 
+        
         public KeyboardState currentKeyboardState;
         public KeyboardState previousKeyboardState;
 
@@ -34,6 +37,8 @@ namespace TruckGame
         public List<GameObject> objectsToRemove;
 
         Texture2D background;
+        Texture2D gsBackground;
+        Texture2D goBackground;
 
         public GamePadState currentGamePadState;
         public GamePadState previousGamePadState;
@@ -41,15 +46,18 @@ namespace TruckGame
 
         MouseState currentMouseState;
         MouseState previousMouseState;
-
         
+        Button GameStart, GameExit, GameRestart;
+        
+
 
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             graphics.PreferredBackBufferWidth = 1920;
             graphics.PreferredBackBufferHeight = 1080;
-
+            graphics.IsFullScreen = true;
+            this.IsMouseVisible = true;
             graphics.IsFullScreen = true;
             Content.RootDirectory = "Content";
         }
@@ -73,6 +81,9 @@ namespace TruckGame
 
             TouchPanel.EnabledGestures = GestureType.FreeDrag;
 
+            GameStart = new Button("Start", new Vector2(1650, 950));
+            GameExit = new Button("Exit", new Vector2(900, 400));
+            GameRestart = new Button("Restart", new Vector2(975, 950));
 
             // I think this always goes last?
             base.Initialize();
@@ -99,8 +110,15 @@ namespace TruckGame
 
             Vector2 playerPosition = new Vector2(GraphicsDevice.Viewport.TitleSafeArea.X + GraphicsDevice.Viewport.TitleSafeArea.Width / 2, GraphicsDevice.Viewport.TitleSafeArea.Y + GraphicsDevice.Viewport.TitleSafeArea.Height / 2);
             player.Start(this, playerAnimation, playerPosition);
-            
+
+            GameStart.texture = Content.Load<Texture2D>("start_but");
+            GameExit.texture = Content.Load<Texture2D>("esc_but");
+            GameRestart.texture = Content.Load<Texture2D>("play_again_but");
+
             background = Content.Load<Texture2D>("bg_arena");
+            gsBackground = Content.Load<Texture2D>("home_bg");
+            goBackground = Content.Load<Texture2D>("gameOver_bg");
+
             // TODO: use this.Content to load your game content here
         }
 
@@ -128,6 +146,40 @@ namespace TruckGame
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
+        {
+            currentMouseState = Mouse.GetState();
+            base.Update(gameTime);
+            switch (_state)
+            {
+                case GameState.MainMenu:
+                    UpdateMainMenu(gameTime);
+                    break;
+
+                case GameState.GamePlay:
+                    UpdateGamePlay(gameTime);
+                    break;
+
+                case GameState.EndOfGame:
+                    UpdateEndOfGame(gameTime);
+                    break;
+
+            }
+        }
+
+        protected void UpdateMainMenu(GameTime gameTime)
+        {
+            if (GameStart.enterButton(currentMouseState) && currentMouseState.LeftButton == ButtonState.Pressed /*&& currentMouseState.LeftButton == ButtonState.Released*/)
+            {
+                _state = GameState.GamePlay;
+                UpdateGamePlay(gameTime);
+            }
+            //  else if(GameExit.enterButton(currentMouseState) && Mouse.GetState().LeftButton == ButtonState.Released && Mouse.GetState().LeftButton == ButtonState.Pressed)
+            //  {
+            //     Exit();
+            // }
+        }
+
+        protected void UpdateGamePlay(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
@@ -211,12 +263,64 @@ namespace TruckGame
                 }
             }
         }
-        
+
+        protected void UpdateEndOfGame(GameTime gameTime)
+        {
+            previousGamePadState = currentGamePadState;
+            previousKeyboardState = currentKeyboardState;
+
+            currentKeyboardState = Keyboard.GetState();
+
+            if (GameRestart.enterButton(currentMouseState) &&/* Mouse.GetState().LeftButton == ButtonState.Released &&*/ Mouse.GetState().LeftButton == ButtonState.Pressed)
+            {
+                Reset();
+                _state = GameState.GamePlay;
+
+            }
+            /*if (GameExit.isInsideCircle(currentMouseState) && Mouse.GetState().LeftButton == ButtonState.Pressed)
+            {
+                Exit();
+            }*/
+            if(currentKeyboardState.IsKeyDown(Keys.Escape) && previousKeyboardState.IsKeyUp(Keys.Escape))
+            {
+                Exit();
+            }
+        }
+
         /// <summary>
         /// This is called when the game should draw itself.
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
+        {
+            spriteBatch.Begin(SpriteSortMode.BackToFront);
+            switch (_state)
+            {
+                case GameState.MainMenu:
+                    DrawMainMenu(gameTime);
+                    break;
+
+                case GameState.GamePlay:
+                    DrawGameplay(gameTime);
+                    break;
+                case GameState.EndOfGame:
+                    DrawEndOfGame(gameTime);
+                    break;
+
+            }
+            spriteBatch.End();
+            base.Draw(gameTime);
+        }
+
+
+        void DrawMainMenu(GameTime gameTime)
+        {            
+            spriteBatch.Draw(gsBackground, new Rectangle(0, 0, background.Width, background.Height), null, Color.White, 0.0f, Vector2.Zero, SpriteEffects.None, 1.0f);
+            spriteBatch.Draw(GameStart.texture, new Rectangle((int)GameStart.position.X, (int)GameStart.position.Y, GameStart.texture.Width, GameStart.texture.Height), null, Color.White, 0f, new Vector2(GameStart.texture.Width / 2, GameStart.texture.Height / 2), SpriteEffects.None, 1.0f);
+            
+        }
+
+        void DrawGameplay(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
@@ -226,18 +330,22 @@ namespace TruckGame
             // player.Draw(spriteBatch);
 
             foreach (GameObject go in objectsInScene)
-            {
-                // if (go.tag == "Player") continue;
-                go.Draw(spriteBatch);
-                
+            {                
+                go.Draw(spriteBatch);                
             }
-
-            // player.Draw(spriteBatch);
-            spriteBatch.End();
-            
-
+                       
+            spriteBatch.End(); 
             base.Draw(gameTime);
         }
+
+        void DrawEndOfGame(GameTime gameTime)
+        {            
+            spriteBatch.Draw(goBackground, new Rectangle(0, 0, background.Width, background.Height), null, Color.White, 0.0f, Vector2.Zero, SpriteEffects.None, 1.0f);
+            //spriteBatch.Draw(GameExit.texture, new Rectangle((int)GameExit.position.X, (int)GameExit.position.Y, GameExit.texture.Width, GameExit.texture.Height), null, Color.White, 0.0f, new Vector2(GameExit.texture.Width / 2, GameStart.texture.Height / 2), SpriteEffects.None, 1.0f);
+            spriteBatch.Draw(GameRestart.texture, new Rectangle((int)GameRestart.position.X, (int)GameRestart.position.Y, GameRestart.texture.Width, GameRestart.texture.Height), null, Color.White, 0f, new Vector2(GameRestart.texture.Width / 2, GameStart.texture.Height / 2), SpriteEffects.None, 1.0f);
+            
+        }
+
 
         public GameObject FindGameObjectByTag(string tag)
         {
@@ -268,6 +376,7 @@ namespace TruckGame
 
         public void Reset()
         {
+            _state = GameState.EndOfGame;
             timer.playerTime = 0f;
             player.Position = new Vector2(GraphicsDevice.Viewport.TitleSafeArea.X + GraphicsDevice.Viewport.TitleSafeArea.Width / 2, GraphicsDevice.Viewport.TitleSafeArea.Y + GraphicsDevice.Viewport.TitleSafeArea.Height / 2);
             // Figure out how to reset game here
