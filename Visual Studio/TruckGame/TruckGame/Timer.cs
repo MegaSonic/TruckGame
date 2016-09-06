@@ -23,11 +23,13 @@ namespace TruckGame
         {
             font = game.Content.Load<SpriteFont>("Timer");
             tag = "Timer";
+            position = new Vector2(10, 10);
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.DrawString(font, formattedTime, new Vector2(10, 10), Color.White, 0.0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0.0f);
+
+            spriteBatch.DrawString(font, formattedTime, position, Color.White, 0.0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0.0f);
         }
 
         public override void Update(GameTime gameTime)
