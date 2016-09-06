@@ -271,6 +271,8 @@ namespace TruckGame
 
             currentKeyboardState = Keyboard.GetState();
 
+
+
             if (GameRestart.enterButton(currentMouseState) &&/* Mouse.GetState().LeftButton == ButtonState.Released &&*/ Mouse.GetState().LeftButton == ButtonState.Pressed)
             {
                 Reset();
@@ -341,7 +343,9 @@ namespace TruckGame
             spriteBatch.Draw(goBackground, new Rectangle(0, 0, background.Width, background.Height), null, Color.White, 0.0f, Vector2.Zero, SpriteEffects.None, 1.0f);
             //spriteBatch.Draw(GameExit.texture, new Rectangle((int)GameExit.position.X, (int)GameExit.position.Y, GameExit.texture.Width, GameExit.texture.Height), null, Color.White, 0.0f, new Vector2(GameExit.texture.Width / 2, GameStart.texture.Height / 2), SpriteEffects.None, 1.0f);
             spriteBatch.Draw(GameRestart.texture, new Rectangle((int)GameRestart.position.X, (int)GameRestart.position.Y, GameRestart.texture.Width, GameRestart.texture.Height), null, Color.White, 0f, new Vector2(GameRestart.texture.Width / 2, GameStart.texture.Height / 2), SpriteEffects.None, 1.0f);
-
+            spriteBatch.DrawString(timer.font,"Score", new Vector2(800, 200), Color.Red, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0.5f);
+            timer.position = new Vector2(925,200);
+            timer.Draw(spriteBatch);
         }
 
 
@@ -376,6 +380,7 @@ namespace TruckGame
         {
             _state = GameState.EndOfGame;
             timer.playerTime = 0f;
+            timer.position = new Vector2(10,10);
             player.Position = new Vector2(GraphicsDevice.Viewport.TitleSafeArea.X + GraphicsDevice.Viewport.TitleSafeArea.Width / 2, GraphicsDevice.Viewport.TitleSafeArea.Y + GraphicsDevice.Viewport.TitleSafeArea.Height / 2);
             // Figure out how to reset game here
             foreach (GameObject go in objectsInScene)
