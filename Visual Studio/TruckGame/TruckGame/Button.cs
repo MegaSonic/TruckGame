@@ -38,10 +38,10 @@ namespace TruckGame
                    currentMouseState.Y < (position.Y + texture.Height/2) && // lower bound
                    currentMouseState.Y > (position.Y - texture.Height/2)) // upper bound
             {
-                Console.WriteLine(currentMouseState.X + "True" );
+                // Console.WriteLine(currentMouseState.X + "True" );
                 return true;
             }
-            Console.WriteLine(currentMouseState.X + "False" + texture.Width + texture.Height);
+            // Console.WriteLine(currentMouseState.X + "False" + texture.Width + texture.Height);
             //Console.WriteLine()
             // // return false; 
             return false;   
