@@ -265,6 +265,7 @@ namespace TruckGame
                     //if (possibleCollideable.IsCurrentlyCollideable)
                     //{
                         // Kill the player
+                         
                         activeGame.Reset();
                     //}
                 //}
