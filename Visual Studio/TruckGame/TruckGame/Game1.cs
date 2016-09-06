@@ -325,7 +325,6 @@ namespace TruckGame
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
-            spriteBatch.Begin(SpriteSortMode.BackToFront);
             spriteBatch.Draw(background, new Rectangle(0, 0, background.Width, background.Height), null, Color.White, 0.0f, Vector2.Zero, SpriteEffects.None, 1.0f);
             // player.Draw(spriteBatch);
 
@@ -334,16 +333,15 @@ namespace TruckGame
                 go.Draw(spriteBatch);                
             }
                        
-            spriteBatch.End(); 
-            base.Draw(gameTime);
         }
 
         void DrawEndOfGame(GameTime gameTime)
-        {            
+        {
+
             spriteBatch.Draw(goBackground, new Rectangle(0, 0, background.Width, background.Height), null, Color.White, 0.0f, Vector2.Zero, SpriteEffects.None, 1.0f);
             //spriteBatch.Draw(GameExit.texture, new Rectangle((int)GameExit.position.X, (int)GameExit.position.Y, GameExit.texture.Width, GameExit.texture.Height), null, Color.White, 0.0f, new Vector2(GameExit.texture.Width / 2, GameStart.texture.Height / 2), SpriteEffects.None, 1.0f);
             spriteBatch.Draw(GameRestart.texture, new Rectangle((int)GameRestart.position.X, (int)GameRestart.position.Y, GameRestart.texture.Width, GameRestart.texture.Height), null, Color.White, 0f, new Vector2(GameRestart.texture.Width / 2, GameStart.texture.Height / 2), SpriteEffects.None, 1.0f);
-            
+
         }
 
 
