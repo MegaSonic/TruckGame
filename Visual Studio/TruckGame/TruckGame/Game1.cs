@@ -271,6 +271,11 @@ namespace TruckGame
             timer.playerTime = 0f;
             player.Position = new Vector2(GraphicsDevice.Viewport.TitleSafeArea.X + GraphicsDevice.Viewport.TitleSafeArea.Width / 2, GraphicsDevice.Viewport.TitleSafeArea.Y + GraphicsDevice.Viewport.TitleSafeArea.Height / 2);
             // Figure out how to reset game here
+            foreach (GameObject go in objectsInScene)
+            {
+                if (go.tag == "Timer" || go.tag == "Player") continue;
+                else objectsToRemove.Add(go);
+            }
         }
 
         public float VectorToAngle(Vector2 vector)

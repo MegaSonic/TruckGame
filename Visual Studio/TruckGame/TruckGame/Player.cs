@@ -20,6 +20,10 @@ namespace TruckGame
         // public Texture2D PlayerTexture;
         public Animation playerAnimation;
 
+        public Texture2D dashSheet;
+        public Animation dashAnimation;
+        public Animation walkAnimation;
+
         public bool active;
         public int health;
 
@@ -48,6 +52,12 @@ namespace TruckGame
         public void Start(Game1 game, Animation animation, Vector2 position)
         {
             playerAnimation = animation;
+            walkAnimation = animation;
+            dashSheet = game.Content.Load<Texture2D>("player_dash");
+            dashAnimation = new Animation();
+            dashAnimation.Initialize(dashSheet, position, 110, 60, 2, 100, Color.White, 1f, true);
+            dashAnimation.depth = playerAnimation.depth;
+            dashAnimation.pivot = new Vector2(66, 30);
             this.Position = position;
             active = true;
             health = 100;
@@ -66,7 +76,11 @@ namespace TruckGame
             if (dodgeTimer > 0f) dodgeTimer -= deltaTime;
             if (dodgeCooldownTimer > 0f && !isDodgeRolling) dodgeCooldownTimer -= deltaTime;
             if (tauntTimer > 0f) tauntTimer -= deltaTime;
-            if (dodgeTimer < 0f) isDodgeRolling = false;
+            if (dodgeTimer < 0f)
+            {
+                isDodgeRolling = false;
+                playerAnimation = walkAnimation;
+            }
 
 
             // this.X += activeGame.currentGamePadState.ThumbSticks.Left.X * playerMoveSpeed * deltaTime;
@@ -76,7 +90,7 @@ namespace TruckGame
             
 
             bool left = false, right = false;
-
+            bool anyDirection = false;
             if (activeGame.currentKeyboardState.IsKeyDown(Keys.Left) || activeGame.currentKeyboardState.IsKeyDown(Keys.A) || activeGame.currentGamePadState.DPad.Left == ButtonState.Pressed)
             {
                 if (!isDodgeRolling)
@@ -89,6 +103,7 @@ namespace TruckGame
                 }
                 Rotation = (float) Math.PI;
                 left = true;
+                anyDirection = true;
             }
 
             if (activeGame.currentKeyboardState.IsKeyDown(Keys.Right) || activeGame.currentKeyboardState.IsKeyDown(Keys.D) || activeGame.currentGamePadState.DPad.Right == ButtonState.Pressed)
@@ -103,6 +118,7 @@ namespace TruckGame
                 }
                 Rotation = 0f;
                 right = true;
+                anyDirection = true;
             }
 
             if (activeGame.currentKeyboardState.IsKeyDown(Keys.Up) || activeGame.currentKeyboardState.IsKeyDown(Keys.W) || activeGame.currentGamePadState.DPad.Up == ButtonState.Pressed)
@@ -118,6 +134,7 @@ namespace TruckGame
                 Rotation = (float)Math.PI * 3 / 2;
                 if (left) Rotation = (float)Math.PI * 5 / 4;
                 else if (right) Rotation = (float)Math.PI * 7 / 4;
+                anyDirection = true;
             }
 
             if (activeGame.currentKeyboardState.IsKeyDown(Keys.Down) || activeGame.currentKeyboardState.IsKeyDown(Keys.S) || activeGame.currentGamePadState.DPad.Down == ButtonState.Pressed)
@@ -133,14 +150,16 @@ namespace TruckGame
                 Rotation = (float) Math.PI / 2;
                 if (left) Rotation = (float) Math.PI * 3/4;
                 else if (right) Rotation = (float)Math.PI * 1 / 4;
+                anyDirection = true;
             }
 
             // Dodge Roll
-            if (activeGame.currentKeyboardState.IsKeyDown(Keys.Z) && activeGame.previousKeyboardState.IsKeyUp(Keys.Z) && dodgeCooldownTimer <= 0)
+            if (activeGame.currentKeyboardState.IsKeyDown(Keys.Z) && activeGame.previousKeyboardState.IsKeyUp(Keys.Z) && dodgeCooldownTimer <= 0 && anyDirection)
             {
                 isDodgeRolling = true;
                 dodgeTimer = dodgeLength;
                 dodgeCooldownTimer = dodgeCooldownLength;
+                playerAnimation = dashAnimation;
                 
             }
 

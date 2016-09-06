@@ -29,6 +29,7 @@ namespace TruckGame
         public bool Looping;
         public Vector2 Position;
         public float depth = 1.0f;
+        public Vector2 pivot;
 
         public void Initialize(Texture2D texture, Vector2 position, int frameWidth, int frameHeight, int frameCount, int frametime, Color color, float scale, bool looping)
         {
@@ -42,6 +43,8 @@ namespace TruckGame
             this.frameCount = frameCount;
             this.frameTime = frametime;
             this.scale = scale;
+
+            pivot = new Vector2(FrameWidth / 2, FrameHeight / 2);
 
             Looping = looping;
             Position = position;
@@ -106,7 +109,7 @@ namespace TruckGame
             // Only draw the animation when we are active
             if (Active)
             {
-                spriteBatch.Draw(spriteStrip, destinationRect, sourceRect, color, angle, new Vector2(FrameWidth / 2, FrameHeight / 2), SpriteEffects.None, depth);
+                spriteBatch.Draw(spriteStrip, destinationRect, sourceRect, color, angle, pivot, SpriteEffects.None, depth);
             }
         }
 

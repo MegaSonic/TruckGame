@@ -22,7 +22,7 @@ namespace TruckGame
         public Timer(Game1 game)
         {
             font = game.Content.Load<SpriteFont>("Timer");
-            
+            tag = "Timer";
         }
 
         public override void Draw(SpriteBatch spriteBatch)
