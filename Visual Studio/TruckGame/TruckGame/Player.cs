@@ -36,7 +36,7 @@ namespace TruckGame
 
         private float tauntTimer = 0f;
         public float tauntCooldownLength = 1f;
-        public float tauntRadius;
+        public float tauntRadius = 900f;
 
         public bool isDodgeRolling = false;
 
@@ -153,8 +153,11 @@ namespace TruckGame
                     Truck truck = go as Truck;
                     if (truck.isDestroyed)
                     {
-                        activeGame.objectsToRemove.Add(go);
-                        Truck.CrashedTrucks--;
+                        if (Math.Pow(truck.X - this.X, 2) + Math.Pow(truck.Y - this.Y, 2) < Math.Pow(tauntRadius, 2))
+                        {
+                            activeGame.objectsToRemove.Add(go);
+                            Truck.CrashedTrucks--;
+                        }
                     }
                     else
                     {

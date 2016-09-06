@@ -30,6 +30,7 @@ namespace TruckGame
         public bool isDestroyed = false;
 
         public float truckMoveSpeed = 400.0f;
+        public float truckTauntedMoveSpeed = 600f;
         public float rotation;
 
         public Vector2 startPosition;
@@ -113,9 +114,18 @@ namespace TruckGame
 
 
                 Vector2 normalized = Vector2.Normalize(targetPosition - startPosition);
-                normalized *= (truckMoveSpeed + Truck.CrashedTrucks * crashedTruckSpeedIncrease);
-                this.X += normalized.X * deltaTime;
-                this.Y += normalized.Y * deltaTime;
+                if (!isTaunted)
+                {
+                    normalized *= (truckMoveSpeed + Truck.CrashedTrucks * crashedTruckSpeedIncrease);
+                    this.X += normalized.X * deltaTime;
+                    this.Y += normalized.Y * deltaTime;
+                }
+                else
+                {
+                    normalized *= (truckTauntedMoveSpeed + Truck.CrashedTrucks * crashedTruckSpeedIncrease);
+                    this.X += normalized.X * deltaTime;
+                    this.Y += normalized.Y * deltaTime;
+                }
 
                 if (this.X > 0 + truckAnimation.FrameWidth / 2 && this.X < activeGame.GraphicsDevice.Viewport.Width && this.Y > 0 + truckAnimation.FrameWidth / 2 && this.Y < activeGame.GraphicsDevice.Viewport.Height - 0)
                 {
