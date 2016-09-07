@@ -254,8 +254,9 @@ namespace TruckGame
                     if (secondCollideable == null) continue;
                     if (!secondCollideable.IsCurrentlyCollideable) continue;
 
-
-                    if (possibleCollideable.BoundingBox.Intersects(secondCollideable.BoundingBox))
+                    float distanceBetweenObjects = (float) (Math.Pow(objectsInScene[i].position.X - objectsInScene[j].position.X, 2) + Math.Pow(objectsInScene[i].position.Y - objectsInScene[j].position.Y, 2));
+                    float sumOfRadii = (float)(Math.Pow(possibleCollideable.Radius + secondCollideable.Radius, 2));
+                    if (distanceBetweenObjects < sumOfRadii)
                     {
                         possibleCollideable.Collided(objectsInScene[j]);
                         secondCollideable.Collided(objectsInScene[i]);
@@ -376,7 +377,7 @@ namespace TruckGame
         public void Reset()
         {
             _state = GameState.EndOfGame;
-            timer.playerTime = 0f;
+            timer.points = 0;
             timer.position = new Vector2(10,10);
             player.Position = new Vector2(GraphicsDevice.Viewport.TitleSafeArea.X + GraphicsDevice.Viewport.TitleSafeArea.Width / 2, GraphicsDevice.Viewport.TitleSafeArea.Y + GraphicsDevice.Viewport.TitleSafeArea.Height / 2);
             // Figure out how to reset game here

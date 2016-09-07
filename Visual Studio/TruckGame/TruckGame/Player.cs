@@ -40,9 +40,11 @@ namespace TruckGame
 
         private float tauntTimer = 0f;
         public float tauntCooldownLength = 1f;
-        public float tauntRadius = 600f;
+        public float tauntRadius = 450f;
 
         public bool isDodgeRolling = false;
+
+        public float radius = 28f;
 
         public Player()
         {
@@ -275,6 +277,14 @@ namespace TruckGame
                 activeGame.Reset();
 
 
+            }
+        }
+
+        public float Radius
+        {
+            get
+            {
+                return radius;
             }
         }
     }

@@ -10,7 +10,7 @@ namespace TruckGame
 {
     public interface ICollideable
     {
-        Rectangle BoundingBox
+        float Radius
         {
             get;
         }

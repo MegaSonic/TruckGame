@@ -44,6 +44,7 @@ namespace TruckGame
         public Vector2 startPosition;
         public Vector2 targetPosition;
 
+        public float radius = 50f;
 
         public bool displayingPoints = false;
         public int pointValue;
@@ -291,6 +292,12 @@ namespace TruckGame
             set { rotation = value;  truckAnimation.angle = value; }
         }
 
-        
+        public float Radius
+        {
+            get
+            {
+                return radius;
+            }
+        }
     }
 }
