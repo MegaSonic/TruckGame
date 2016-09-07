@@ -181,10 +181,11 @@ namespace TruckGame
 
                             truck.displayingPoints = true;
                             truck.pointValue = points;
-                            if (points < 12800)
+                            if (points < 25600)
                             {
                                 points *= 2;
                             }
+                            activeGame.timer.points += points;
                             Truck.CrashedTrucks--;
                         }
                     }
