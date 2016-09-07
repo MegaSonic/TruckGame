@@ -109,7 +109,6 @@
 /processorParam:TextureFormat=Color
 /build:player_dash.png
 
-
 #begin truck_drive.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -123,6 +122,15 @@
 /build:truck_drive.png
 
 #begin gameOver_bg.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
 /build:gameOver_bg.png
 
 #begin truck_crash.png
@@ -138,7 +146,28 @@
 /build:truck_crash.png
 
 #begin home_bg.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
 /build:home_bg.png
+
+#begin truck_charge.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:truck_charge.png
 
 #begin play_again_but.png
 /importer:TextureImporter
@@ -150,7 +179,6 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:truck_charge.png
 /build:play_again_but.png
 
 #begin start_but.png
@@ -176,4 +204,16 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:esc_but.png
+
+#begin single_splat.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:single_splat.png
 

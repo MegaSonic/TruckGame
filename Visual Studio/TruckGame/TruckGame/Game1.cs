@@ -382,7 +382,7 @@ namespace TruckGame
             // Figure out how to reset game here
             foreach (GameObject go in objectsInScene)
             {
-                if (go.tag == "Timer" || go.tag == "Player") continue;
+                if (go.tag == "Timer" || go.tag == "Player" || go.tag == "Bloodstain") continue;
                 else objectsToRemove.Add(go);
             }
         }

@@ -267,18 +267,12 @@ namespace TruckGame
 
         public void Collided(GameObject collidedWith)
         {
-            if (collidedWith.tag == "Truck" )
+            if (collidedWith.tag == "Truck")
             {
-                //ICollideable possibleCollideable = collidedWith as ICollideable;
-                //if (possibleCollideable != null)
-                //{
-                    //if (possibleCollideable.IsCurrentlyCollideable)
-                    //{
-                        // Kill the player
-                         
-                        activeGame.Reset();
-                    //}
-                //}
+                Bloodstain stain = new Bloodstain(this.Position, (float) ((1 * Math.PI / 2) * activeGame.VectorToAngle(collidedWith.position - this.Position)), activeGame);
+                activeGame.objectsInScene.Add(stain);
+                activeGame.Reset();
+
 
             }
         }
