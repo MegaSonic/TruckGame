@@ -17,6 +17,7 @@ namespace TruckGame
         public SpriteFont font;
         public float playerTime = 0f;
         string formattedTime;
+        public int points = 0;
 
 
         public Timer(Game1 game)
@@ -35,34 +36,10 @@ namespace TruckGame
         public override void Update(GameTime gameTime)
         {
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
-            playerTime += deltaTime;
 
-            // Gets the minute aspect of player time
-            int minuteInt = (int)playerTime / 60;
-            string minutes;
-            if (minuteInt < 10)
-                minutes = "0" + minuteInt.ToString();
-            else
-                minutes = minuteInt.ToString();
+            points += (int) (100 * deltaTime);
 
-
-            // Gets the second aspect of player time
-            int secondInt = (int) Math.Floor(playerTime % 60);
-            string seconds;
-            if (secondInt < 10)
-                seconds = "0" + secondInt.ToString();
-            else
-                seconds = secondInt.ToString();
-
-            // Gets the millisecond aspect of player time
-            int millisecondInt = (int) Math.Floor((playerTime % 1f) * 100f);
-            string milliseconds;
-            if (millisecondInt < 10)
-                milliseconds = "0" + millisecondInt.ToString();
-            else
-                milliseconds = millisecondInt.ToString();
-
-            formattedTime = (minutes + "'" + seconds + "'" + milliseconds);
+            formattedTime = points.ToString();
         }
     }
 }
