@@ -57,7 +57,7 @@ namespace TruckGame
             walkAnimation = animation;
             dashSheet = game.Content.Load<Texture2D>("player_dash");
             dashAnimation = new Animation();
-            dashAnimation.Initialize(dashSheet, position, 110, 60, 2, 100, Color.White, 2f, true);
+            dashAnimation.Initialize(dashSheet, position, 110, 60, 2, 100, Color.White, 1.5f, true);
             
             dashAnimation.pivot = new Vector2(60, 30);
             

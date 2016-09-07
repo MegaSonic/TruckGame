@@ -107,7 +107,7 @@ namespace TruckGame
 
             Animation playerAnimation = new Animation();
             Texture2D playerTexture = Content.Load<Texture2D>("player_walk");
-            playerAnimation.Initialize(playerTexture, Vector2.Zero, 31, 44, 2, 300, Color.White, 2f, true );
+            playerAnimation.Initialize(playerTexture, Vector2.Zero, 31, 44, 2, 300, Color.White, 1.5f, true );
 
             Vector2 playerPosition = new Vector2(GraphicsDevice.Viewport.TitleSafeArea.X + GraphicsDevice.Viewport.TitleSafeArea.Width / 2, GraphicsDevice.Viewport.TitleSafeArea.Y + GraphicsDevice.Viewport.TitleSafeArea.Height / 2);
             player.Start(this, playerAnimation, playerPosition);
