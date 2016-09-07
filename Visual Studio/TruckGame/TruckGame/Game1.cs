@@ -56,9 +56,8 @@ namespace TruckGame
             graphics = new GraphicsDeviceManager(this);
             graphics.PreferredBackBufferWidth = 1920;
             graphics.PreferredBackBufferHeight = 1080;
-            graphics.IsFullScreen = true;
             this.IsMouseVisible = true;
-            graphics.IsFullScreen = true;
+            // graphics.IsFullScreen = true;
             Content.RootDirectory = "Content";
         }
 
@@ -226,7 +225,7 @@ namespace TruckGame
                 Truck truck = new Truck(this, truckSpawnPoint);
                 truck.startPosition = truckSpawnPoint;
                 truck.targetPosition = player.Position;
-                truck.Rotation = (float) (3 * Math.PI / 2 + VectorToAngle(truck.startPosition - truck.targetPosition));
+                truck.Rotation = (float) (1 * Math.PI / 2 + VectorToAngle(truck.startPosition - truck.targetPosition));
                 objectsInScene.Add(truck);
                 //Debug.WriteLine(objectsInScene.Count);
                 //Debug.WriteLine("Spawn Point: " + truckSpawnPoint.X + ", " + truckSpawnPoint.Y + "... " + truck.targetPosition.X + " ," + truck.targetPosition.Y);

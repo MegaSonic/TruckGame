@@ -169,6 +169,7 @@ namespace TruckGame
             if (((activeGame.currentKeyboardState.IsKeyDown(Keys.X) && activeGame.previousKeyboardState.IsKeyUp(Keys.X)) || (activeGame.currentKeyboardState.IsKeyDown(Keys.LeftShift) && activeGame.previousKeyboardState.IsKeyUp(Keys.LeftShift))) && tauntTimer <= 0)
             {
                 tauntTimer = tauntCooldownLength;
+                int points = 100;
                 foreach (GameObject go in activeGame.FindGameObjectsByTag("Truck"))
                 {
                     Truck truck = go as Truck;
@@ -176,7 +177,14 @@ namespace TruckGame
                     {
                         if (Math.Pow(truck.X - this.X, 2) + Math.Pow(truck.Y - this.Y, 2) < Math.Pow(tauntRadius, 2))
                         {
-                            activeGame.objectsToRemove.Add(go);
+                            // activeGame.objectsToRemove.Add(go);
+
+                            truck.displayingPoints = true;
+                            truck.pointValue = points;
+                            if (points < 12800)
+                            {
+                                points *= 2;
+                            }
                             Truck.CrashedTrucks--;
                         }
                     }

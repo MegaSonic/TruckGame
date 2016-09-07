@@ -15,6 +15,8 @@ namespace TruckGame
 
         public static Texture2D truckTexture;
         public static Texture2D damagedTruck;
+        public static Texture2D driveTruck;
+        public static Texture2D crashTruck;
 
         public static float ActiveTruckDepth = 0.3f;
         public static float CrashedTruckDepth = 0.5f;
@@ -22,7 +24,10 @@ namespace TruckGame
         public static int CrashedTrucks = 0;
         public float crashedTruckSpeedIncrease = 5f;
 
-        public Animation truckAnimation;
+        public Animation truckAnimation = new Animation();
+        public Animation deadAnimation = new Animation();
+        public Animation crashAnimation = new Animation();
+        public Animation driveAnimation = new Animation();
 
         public bool active;
         public int health;
@@ -39,6 +44,15 @@ namespace TruckGame
         public Vector2 startPosition;
         public Vector2 targetPosition;
 
+
+        public bool displayingPoints = false;
+        public int pointValue;
+        public float pointDisplayTime = 2f;
+        private float pointTimer = 0f;
+        public Color pointColor = new Color(0, 255, 0);
+        private bool changingToWhite = true;
+
+
         public bool isTaunted = false;
 
         public Truck(Game1 game, Vector2 position)
@@ -48,11 +62,26 @@ namespace TruckGame
             {
                 truckTexture = game.Content.Load<Texture2D>("truck_sheet");
                 damagedTruck = game.Content.Load<Texture2D>("monster_truck_damaged");
+                crashTruck = game.Content.Load<Texture2D>("truck_crash");
+                driveTruck = game.Content.Load<Texture2D>("truck_drive");
             }
 
-            truckAnimation = new Animation();
-            truckAnimation.Initialize(truckTexture, Vector2.Zero, 111, 92, 1, 1000, Color.White, 1f, true);
-            truckAnimation.depth = 0.3f;
+            pointTimer = pointDisplayTime;
+            
+            deadAnimation.Initialize(damagedTruck, Vector2.Zero, 170, 103, 1, 1000, new Color(0.5f, 0.5f, 0.5f, 1.0f), 1f, true);
+            deadAnimation.depth = 0.3f;
+            deadAnimation.pivot = new Vector2(105, 53);
+
+            crashAnimation.Initialize(crashTruck, Vector2.Zero, 170, 103, 8, 80, Color.White, 1f, false);
+            crashAnimation.depth = 0.3f;
+            crashAnimation.pivot = new Vector2(105, 53);
+
+            driveAnimation.Initialize(driveTruck, Vector2.Zero, 170, 103, 4, 80, Color.White, 1f, true);
+            driveAnimation.depth = 0.3f;
+            driveAnimation.pivot = new Vector2(105, 53);
+
+            truckAnimation = driveAnimation;
+
             this.Position = position;
             active = true;
             health = 100;
@@ -86,7 +115,14 @@ namespace TruckGame
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            truckAnimation.Draw(spriteBatch);
+            if (!displayingPoints)
+            {
+                truckAnimation.Draw(spriteBatch);
+            }
+            else
+            {
+                spriteBatch.DrawString(activeGame.timer.font, "+" + pointValue, this.Position, pointColor, 0.0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0.2f);
+            }
         }
 
 
@@ -95,7 +131,34 @@ namespace TruckGame
         {
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            
+            truckAnimation.Position = this.Position;
+
+            if (displayingPoints)
+            {
+                
+                pointTimer -= deltaTime;
+                if (pointTimer < 0f)
+                {
+                    activeGame.objectsToRemove.Add(this);
+                }
+
+                if (changingToWhite)
+                {
+                    pointColor = new Color(pointColor.ToVector3().X + 3 * deltaTime, 1f, pointColor.ToVector3().Z + 3 * deltaTime);
+                    if (pointColor.ToVector3().X >= 1f)
+                    {
+                        changingToWhite = false;
+                    }
+                }
+                else
+                {
+                    pointColor = new Color(pointColor.ToVector3().X - 3 * deltaTime, 1f, pointColor.ToVector3().Z - 3 * deltaTime);
+                    if (pointColor.ToVector3().X <= 0f)
+                    {
+                        changingToWhite = true;
+                    }
+                }
+            }
 
             if (!isDestroyed)
             {
@@ -139,34 +202,47 @@ namespace TruckGame
             }
             else
             {
-
+                if (truckAnimation == crashAnimation)
+                {
+                    truckAnimation.color = new Color(truckAnimation.color.ToVector3().X - 0.5f * deltaTime, truckAnimation.color.ToVector3().Y - 0.5f * deltaTime, truckAnimation.color.ToVector3().Z - 0.5f * deltaTime);
+                }
             }
 
-
-            // Debug.WriteLine("Animation: " + truckAnimation.Position.X + ", " + truckAnimation.Position.Y);
-
-            // Debug.WriteLine(this.Position.X + ", " + this.Position.Y);
-
             truckAnimation.Update(gameTime);
+
+            // Change the truck animation from the crashing to destroyed
+            if (truckAnimation == crashAnimation && !truckAnimation.Active)
+            {
+                if (!truckAnimation.Active)
+                {
+                    // Debug.WriteLine("Not active anymore!");
+                    deadAnimation.depth = truckAnimation.depth;
+                    deadAnimation.Position = this.Position;
+                    deadAnimation.angle = this.Rotation;
+                    deadAnimation.color = truckAnimation.color;
+                    truckAnimation = deadAnimation;
+                    truckAnimation.Update(gameTime);
+                }
+            }
         }
 
         public void Taunt()
         {
             this.targetPosition = activeGame.player.Position;
             this.startPosition = this.Position;
-            this.Rotation = (float)(3 * Math.PI / 2 + activeGame.VectorToAngle(this.startPosition - this.targetPosition));
+            this.Rotation = (float)(1 * Math.PI / 2 + activeGame.VectorToAngle(this.startPosition - this.targetPosition));
             isTaunted = true;
 
         }
 
         public void Destroy()
         {
-            Debug.WriteLine("is destroyed");
+            // Debug.WriteLine("is destroyed");
             isDestroyed = true;
+            
             // Truck is destroyed
-            truckAnimation = new Animation();
-            truckAnimation.Initialize(damagedTruck, this.Position, 111, 92, 1, 1000, new Color(0.5f, 0.5f, 0.5f, 1.0f), 1f, true);
-            truckAnimation.angle = Rotation + (float)Math.PI;
+            truckAnimation = crashAnimation;
+            truckAnimation.angle = this.Rotation;
             truckAnimation.depth = CrashedTruckDepth;
             CrashedTruckDepth -= 0.0001f;
             Truck.CrashedTrucks++;
