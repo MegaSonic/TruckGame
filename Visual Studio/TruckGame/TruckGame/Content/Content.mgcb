@@ -229,3 +229,33 @@
 /processorParam:TextureFormat=Color
 /build:shockwave_ole.png
 
+#begin Charge Sound.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Charge Sound.wav
+
+#begin PlayerDeath.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:PlayerDeath.wav
+
+#begin PlayerWalk.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:PlayerWalk.wav
+
+#begin Rev Sound.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Rev Sound.wav
+
+#begin TruckDeath.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:TruckDeath.wav
+

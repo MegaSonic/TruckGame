@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Input.Touch;
 using Microsoft.Xna.Framework.Media;
+using Microsoft.Xna.Framework.Audio;
 
 using System;
 using System.Collections.Generic;
@@ -43,7 +44,9 @@ namespace TruckGame
 
         public GamePadState currentGamePadState;
         public GamePadState previousGamePadState;
+
         Song bgmusic;
+        private SoundEffect playerDeath;
 
         MouseState currentMouseState;
         MouseState previousMouseState;
@@ -105,6 +108,8 @@ namespace TruckGame
             MediaPlayer.IsRepeating = true;
             MediaPlayer.MediaStateChanged += MediaPlayer_MediaStateChanged;
 
+            playerDeath = Content.Load<SoundEffect>("PlayerDeath");
+
             Animation playerAnimation = new Animation();
             Texture2D playerTexture = Content.Load<Texture2D>("player_walk");
             playerAnimation.Initialize(playerTexture, Vector2.Zero, 31, 44, 2, 300, Color.White, 1.5f, true );
@@ -146,6 +151,8 @@ namespace TruckGame
         /// checking for collisions, gathering input, and playing audio.
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
+        /// 
+
         protected override void Update(GameTime gameTime)
         {
             currentMouseState = Mouse.GetState();
@@ -385,6 +392,7 @@ namespace TruckGame
 
         public void Reset()
         {
+            playerDeath.Play();
             _state = GameState.EndOfGame;
             timer.points = 0;
             timer.position = new Vector2(10,10);

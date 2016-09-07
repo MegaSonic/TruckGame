@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Audio;
 
 namespace TruckGame
 {
@@ -53,6 +54,7 @@ namespace TruckGame
         public Color pointColor = new Color(0, 255, 0);
         private bool changingToWhite = true;
 
+        private SoundEffect truckDeath;
 
         public bool isTaunted = false;
 
@@ -65,6 +67,7 @@ namespace TruckGame
                 damagedTruck = game.Content.Load<Texture2D>("monster_truck_damaged");
                 crashTruck = game.Content.Load<Texture2D>("truck_crash");
                 driveTruck = game.Content.Load<Texture2D>("truck_drive");
+                truckDeath = game.Content.Load<SoundEffect>("TruckDeath");
             }
 
             pointTimer = pointDisplayTime;
@@ -174,6 +177,7 @@ namespace TruckGame
                     // Ram into the wall here
                     if (this.X - truckAnimation.FrameWidth / 2 < 0 || this.X > activeGame.GraphicsDevice.Viewport.Width || this.Y - truckAnimation.FrameWidth / 2 < 0 || this.Y > activeGame.GraphicsDevice.Viewport.Height)
                     {
+                        truckDeath.Play();
                         Destroy();
 
                     }
