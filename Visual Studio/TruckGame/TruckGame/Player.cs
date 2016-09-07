@@ -34,7 +34,7 @@ namespace TruckGame
 
         private float dodgeTimer = 0f;
         private float dodgeCooldownTimer = 0f;
-        public float dodgeLength = 0.16f;
+        public float dodgeLength = 0.2f;
         public float dodgeCooldownLength = 0.3f;
         public float dodgeSpeed = 1000.0f;
 
@@ -170,6 +170,8 @@ namespace TruckGame
             // Taunt
             if (((activeGame.currentKeyboardState.IsKeyDown(Keys.X) && activeGame.previousKeyboardState.IsKeyUp(Keys.X)) || (activeGame.currentKeyboardState.IsKeyDown(Keys.LeftShift) && activeGame.previousKeyboardState.IsKeyUp(Keys.LeftShift))) && tauntTimer <= 0)
             {
+                Shockwave taunt = new Shockwave(this.Position, activeGame);
+                activeGame.objectsToAdd.Add(taunt);
                 tauntTimer = tauntCooldownLength;
                 int points = 100;
                 foreach (GameObject go in activeGame.FindGameObjectsByTag("Truck"))

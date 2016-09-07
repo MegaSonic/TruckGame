@@ -35,6 +35,7 @@ namespace TruckGame
 
         public List<GameObject> objectsInScene;
         public List<GameObject> objectsToRemove;
+        public List<GameObject> objectsToAdd;
 
         Texture2D background;
         Texture2D gsBackground;
@@ -72,6 +73,7 @@ namespace TruckGame
             // TODO: Add your initialization logic here
             objectsInScene = new List<GameObject>();
             objectsToRemove = new List<GameObject>();
+            objectsToAdd = new List<GameObject>();
             player = new Player();
             timer = new Timer(this);
             
@@ -202,6 +204,13 @@ namespace TruckGame
             }
 
             objectsToRemove.Clear();
+
+            foreach (GameObject go in objectsToAdd)
+            {
+                objectsInScene.Add(go);
+            }
+
+            objectsToAdd.Clear();
 
             foreach (GameObject go in objectsInScene)
             {
