@@ -45,7 +45,7 @@ namespace TruckGame
         public Vector2 startPosition;
         public Vector2 targetPosition;
 
-        public float radius = 50f;
+        public float radius = 42f;
 
         public bool displayingPoints = false;
         public int pointValue;
@@ -54,7 +54,7 @@ namespace TruckGame
         public Color pointColor = new Color(0, 255, 0);
         private bool changingToWhite = true;
 
-        private SoundEffect truckDeath;
+        private static SoundEffect truckDeath;
 
         public bool isTaunted = false;
 
@@ -177,7 +177,7 @@ namespace TruckGame
                     // Ram into the wall here
                     if (this.X - truckAnimation.FrameWidth / 2 < 0 || this.X > activeGame.GraphicsDevice.Viewport.Width || this.Y - truckAnimation.FrameWidth / 2 < 0 || this.Y > activeGame.GraphicsDevice.Viewport.Height)
                     {
-                        truckDeath.Play();
+                        
                         Destroy();
 
                     }
@@ -250,6 +250,7 @@ namespace TruckGame
             truckAnimation.angle = this.Rotation;
             truckAnimation.depth = CrashedTruckDepth;
             CrashedTruckDepth -= 0.0001f;
+            truckDeath.Play();
             Truck.CrashedTrucks++;
         }
 

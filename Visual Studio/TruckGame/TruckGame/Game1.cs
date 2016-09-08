@@ -52,7 +52,12 @@ namespace TruckGame
         MouseState previousMouseState;
         
         Button GameStart, GameExit, GameRestart;
-        
+
+        public float initialTruckSpawnTime = 3;
+        private float spawnTimer = 0f;
+        private int trucksToSpawn = 1;
+
+        private float spawnIncreaseRateTimer = 10f;
 
 
         public Game1()
@@ -200,7 +205,10 @@ namespace TruckGame
                 Exit();
 
             // TODO: Add your update logic here
-            
+
+            float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            spawnTimer -= deltaTime;
+            spawnIncreaseRateTimer -= deltaTime;
 
             foreach (GameObject go in objectsToRemove)
             {
@@ -226,31 +234,59 @@ namespace TruckGame
 
             CheckCollisions();
 
-            if (currentKeyboardState.IsKeyDown(Keys.A) && previousKeyboardState.IsKeyUp(Keys.A))
+            if (spawnTimer < 0f)
             {
-                Vector2 center = new Vector2(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2);
-                Vector2 topLeft = new Vector2(0f, 0f);
-                Vector2 distance = center - topLeft;
-                
-                distance *= 3 / 2;
+                for (int i = 0; i < trucksToSpawn; i++)
+                {
+                    SpawnTruck();
+                }
                 Random rand = new Random();
-                Matrix rotMatrix = Matrix.CreateRotationZ((float) rand.Next(360));
-                distance = Vector2.Transform(distance, rotMatrix);
-                Vector2 truckSpawnPoint = center - distance;
+                double time = rand.NextDouble();
+                time *= this.initialTruckSpawnTime;
+                spawnTimer = (float) time;
 
-                Truck truck = new Truck(this, truckSpawnPoint);
-                truck.startPosition = truckSpawnPoint;
-                truck.targetPosition = player.Position;
-                truck.Rotation = (float) (1 * Math.PI / 2 + VectorToAngle(truck.startPosition - truck.targetPosition));
-                objectsInScene.Add(truck);
-                //Debug.WriteLine(objectsInScene.Count);
-                //Debug.WriteLine("Spawn Point: " + truckSpawnPoint.X + ", " + truckSpawnPoint.Y + "... " + truck.targetPosition.X + " ," + truck.targetPosition.Y);
+                if (spawnIncreaseRateTimer < 0f)
+                {
+                    if (rand.NextDouble() < 0.5)
+                    {
+                        if (initialTruckSpawnTime > 0.5f)
+                        {
+                            initialTruckSpawnTime -= 0.1f;
+                            spawnIncreaseRateTimer = 1f;
+                            Debug.WriteLine("Spawn rate incrased");
+                        }
+                        else
+                        {
+                            trucksToSpawn++;
+                        }
+                        
+                    }
+                }
             }
 
             //UpdatePlayer(gameTime);
 
 
             base.Update(gameTime);
+        }
+
+        public void SpawnTruck()
+        {
+            Vector2 center = new Vector2(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2);
+            Vector2 topLeft = new Vector2(0f, 0f);
+            Vector2 distance = center - topLeft;
+
+            distance *= 3 / 2;
+            Random rand = new Random();
+            Matrix rotMatrix = Matrix.CreateRotationZ((float)rand.Next(360));
+            distance = Vector2.Transform(distance, rotMatrix);
+            Vector2 truckSpawnPoint = center - distance;
+
+            Truck truck = new Truck(this, truckSpawnPoint);
+            truck.startPosition = truckSpawnPoint;
+            truck.targetPosition = player.Position;
+            truck.Rotation = (float)(1 * Math.PI / 2 + VectorToAngle(truck.startPosition - truck.targetPosition));
+            objectsToAdd.Add(truck);
         }
 
         private void CheckCollisions()
@@ -397,6 +433,9 @@ namespace TruckGame
             timer.points = 0;
             timer.position = new Vector2(10,10);
             player.Position = new Vector2(GraphicsDevice.Viewport.TitleSafeArea.X + GraphicsDevice.Viewport.TitleSafeArea.Width / 2, GraphicsDevice.Viewport.TitleSafeArea.Y + GraphicsDevice.Viewport.TitleSafeArea.Height / 2);
+            initialTruckSpawnTime = 3f;
+            spawnTimer = initialTruckSpawnTime;
+            spawnIncreaseRateTimer = 10f;
             // Figure out how to reset game here
             foreach (GameObject go in objectsInScene)
             {

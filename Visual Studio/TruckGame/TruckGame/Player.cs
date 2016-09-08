@@ -44,7 +44,7 @@ namespace TruckGame
 
         public bool isDodgeRolling = false;
 
-        public float radius = 28f;
+        public float radius = 20f;
 
         public Player()
         {
@@ -53,13 +53,14 @@ namespace TruckGame
 
         public void Start(Game1 game, Animation animation, Vector2 position)
         {
+            animation.pivot = new Vector2(animation.FrameWidth / 2, animation.FrameHeight / 2);
             playerAnimation = animation;
             walkAnimation = animation;
             dashSheet = game.Content.Load<Texture2D>("player_dash");
             dashAnimation = new Animation();
             dashAnimation.Initialize(dashSheet, position, 110, 60, 2, 100, Color.White, 1.5f, true);
             
-            dashAnimation.pivot = new Vector2(60, 30);
+            dashAnimation.pivot = new Vector2(dashAnimation.FrameWidth / 2, dashAnimation.FrameHeight / 2);
             
             this.Position = position;
             dashAnimation.Position = this.Position;
