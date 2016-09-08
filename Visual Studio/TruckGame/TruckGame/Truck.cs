@@ -40,6 +40,8 @@ namespace TruckGame
 
         public float truckMoveSpeed = 400.0f;
         public float truckTauntedMoveSpeed = 600f;
+        public int timesTaunted = 0;
+        public float tauntSpeedBonus = 50f;
         public float rotation;
 
         public Vector2 startPosition;
@@ -180,13 +182,13 @@ namespace TruckGame
                 Vector2 normalized = Vector2.Normalize(targetPosition - startPosition);
                 if (!isTaunted)
                 {
-                    normalized *= (truckMoveSpeed + Truck.CrashedTrucks * crashedTruckSpeedIncrease);
+                    normalized *= (truckMoveSpeed + Truck.CrashedTrucks * crashedTruckSpeedIncrease + (timesTaunted * tauntSpeedBonus));
                     this.X += normalized.X * deltaTime;
                     this.Y += normalized.Y * deltaTime;
                 }
                 else
                 {
-                    normalized *= (truckTauntedMoveSpeed + Truck.CrashedTrucks * crashedTruckSpeedIncrease);
+                    normalized *= (truckTauntedMoveSpeed + Truck.CrashedTrucks * crashedTruckSpeedIncrease + (timesTaunted * tauntSpeedBonus));
                     this.X += normalized.X * deltaTime;
                     this.Y += normalized.Y * deltaTime;
                 }
@@ -229,6 +231,7 @@ namespace TruckGame
             this.targetPosition = activeGame.player.Position;
             this.startPosition = this.Position;
             this.Rotation = (float)(1 * Math.PI / 2 + activeGame.VectorToAngle(this.startPosition - this.targetPosition));
+            timesTaunted++;
             isTaunted = true;
 
         }

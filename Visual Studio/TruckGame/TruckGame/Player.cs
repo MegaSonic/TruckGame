@@ -276,6 +276,8 @@ namespace TruckGame
             if (collidedWith.tag == "Truck")
             {
                 Bloodstain stain = new Bloodstain(this.Position, (float) ((1 * Math.PI / 2) * activeGame.VectorToAngle(collidedWith.position - this.Position)), activeGame);
+
+                /*
                 Console.WriteLine("Player at " + this.Position.X + ", " + this.Position.Y);
                 Console.WriteLine("Truck at " + collidedWith.position.X + ", " + collidedWith.position.Y);
                 float distanceBetweenObjects = (float)(Math.Pow(this.position.X - collidedWith.position.X, 2) + Math.Pow(this.position.Y - collidedWith.position.Y, 2));
@@ -286,6 +288,8 @@ namespace TruckGame
                 Console.WriteLine("Truck's pivot: " + secondCollideable.Pivot);
                 Console.WriteLine("Distance squared: " + distanceBetweenObjects);
                 Console.WriteLine("Radius squared: " + sumOfRadii);
+                */
+
                 activeGame.objectsInScene.Add(stain);
                 activeGame.Reset();
 
