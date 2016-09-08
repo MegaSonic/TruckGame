@@ -57,7 +57,7 @@ namespace TruckGame
         private float spawnTimer = 0f;
         private int trucksToSpawn = 1;
 
-        private float spawnIncreaseRateTimer = 10f;
+        private float spawnIncreaseRateTimer = 8f;
 
         Random rand = new Random();
 
@@ -241,37 +241,36 @@ namespace TruckGame
             }
             */
 
-            
+
             if (spawnTimer < 0f)
             {
 
-                    SpawnTruck();
+                SpawnTruck();
 
 
                 double time = rand.NextDouble();
                 time *= this.initialTruckSpawnTime;
-                spawnTimer = (float) time;
+                spawnTimer = (float)time;
 
                 if (spawnIncreaseRateTimer < 0f)
                 {
-                    if (rand.NextDouble() < 0.6)
+                    if (rand.NextDouble() < 0.5)
                     {
                         if (initialTruckSpawnTime > 0.5f)
                         {
-                            initialTruckSpawnTime -= 0.2f;
+                            initialTruckSpawnTime -= 0.15f;
                             spawnIncreaseRateTimer = 1f;
-                            Debug.WriteLine("Spawn rate incrased");
                         }
-                        
+
                     }
                 }
             }
-            
-
-                //UpdatePlayer(gameTime);
 
 
-                base.Update(gameTime);
+            //UpdatePlayer(gameTime);
+
+
+            base.Update(gameTime);
         }
 
         public void SpawnTruck()
