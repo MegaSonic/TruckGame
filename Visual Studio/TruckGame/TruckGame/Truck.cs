@@ -120,7 +120,7 @@ namespace TruckGame
             }
             else
             {
-                spriteBatch.DrawString(activeGame.timer.font, "+" + pointValue, this.Position, pointColor, 0.0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0.2f);
+                spriteBatch.DrawString(activeGame.timer.font, "+" + pointValue, this.Position, pointColor, 0.0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0.35f);
             }
         }
 
@@ -170,7 +170,7 @@ namespace TruckGame
                 if (!isInvincible)
                 {
                     // Ram into the wall here
-                    if (this.X - truckAnimation.FrameWidth / 2 < 0 || this.X > activeGame.GraphicsDevice.Viewport.Width || this.Y - truckAnimation.FrameWidth / 2 < 0 || this.Y > activeGame.GraphicsDevice.Viewport.Height)
+                    if (this.X /* - truckAnimation.FrameWidth / 2*/ < 0 || this.X > activeGame.GraphicsDevice.Viewport.Width || this.Y /*- truckAnimation.FrameWidth / 2*/ < 0 || this.Y > activeGame.GraphicsDevice.Viewport.Height)
                     {
                         
                         Destroy();
@@ -182,13 +182,13 @@ namespace TruckGame
                 Vector2 normalized = Vector2.Normalize(targetPosition - startPosition);
                 if (!isTaunted)
                 {
-                    normalized *= (truckMoveSpeed + Truck.CrashedTrucks * crashedTruckSpeedIncrease + (timesTaunted * tauntSpeedBonus));
+                    normalized *= (truckMoveSpeed + Truck.CrashedTrucks * crashedTruckSpeedIncrease);
                     this.X += normalized.X * deltaTime;
                     this.Y += normalized.Y * deltaTime;
                 }
                 else
                 {
-                    normalized *= (truckTauntedMoveSpeed + Truck.CrashedTrucks * crashedTruckSpeedIncrease + (timesTaunted * tauntSpeedBonus));
+                    normalized *= (truckTauntedMoveSpeed + Truck.CrashedTrucks * crashedTruckSpeedIncrease);
                     this.X += normalized.X * deltaTime;
                     this.Y += normalized.Y * deltaTime;
                 }
@@ -240,13 +240,14 @@ namespace TruckGame
         {
             // Debug.WriteLine("is destroyed");
             isDestroyed = true;
-            
+
             // Truck is destroyed
             truckAnimation = crashAnimation;
             truckAnimation.angle = this.Rotation;
             truckAnimation.depth = CrashedTruckDepth;
             CrashedTruckDepth -= 0.0001f;
             truckDeath.Play();
+            
             Truck.CrashedTrucks++;
         }
 

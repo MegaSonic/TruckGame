@@ -59,6 +59,7 @@ namespace TruckGame
 
         private float spawnIncreaseRateTimer = 10f;
 
+        Random rand = new Random();
 
         public Game1()
         {
@@ -234,40 +235,43 @@ namespace TruckGame
 
             CheckCollisions();
 
+
+            if (currentKeyboardState.IsKeyDown(Keys.A) && previousKeyboardState.IsKeyUp(Keys.A)) {
+                SpawnTruck();
+            }
+
+
+            
             if (spawnTimer < 0f)
             {
-                for (int i = 0; i < trucksToSpawn; i++)
-                {
+
                     SpawnTruck();
-                }
-                Random rand = new Random();
+
+
                 double time = rand.NextDouble();
                 time *= this.initialTruckSpawnTime;
                 spawnTimer = (float) time;
 
                 if (spawnIncreaseRateTimer < 0f)
                 {
-                    if (rand.NextDouble() < 0.5)
+                    if (rand.NextDouble() < 0.6)
                     {
                         if (initialTruckSpawnTime > 0.5f)
                         {
-                            initialTruckSpawnTime -= 0.1f;
+                            initialTruckSpawnTime -= 0.2f;
                             spawnIncreaseRateTimer = 1f;
                             Debug.WriteLine("Spawn rate incrased");
-                        }
-                        else
-                        {
-                            trucksToSpawn++;
                         }
                         
                     }
                 }
             }
+            
 
-            //UpdatePlayer(gameTime);
+                //UpdatePlayer(gameTime);
 
 
-            base.Update(gameTime);
+                base.Update(gameTime);
         }
 
         public void SpawnTruck()
@@ -435,7 +439,9 @@ namespace TruckGame
             player.Position = new Vector2(GraphicsDevice.Viewport.TitleSafeArea.X + GraphicsDevice.Viewport.TitleSafeArea.Width / 2, GraphicsDevice.Viewport.TitleSafeArea.Y + GraphicsDevice.Viewport.TitleSafeArea.Height / 2);
             initialTruckSpawnTime = 3f;
             spawnTimer = initialTruckSpawnTime;
+            trucksToSpawn = 1;
             spawnIncreaseRateTimer = 10f;
+            Truck.CrashedTrucks = 0;
             // Figure out how to reset game here
             foreach (GameObject go in objectsInScene)
             {
