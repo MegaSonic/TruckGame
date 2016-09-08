@@ -10,6 +10,7 @@ using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Audio;
 
 
 
@@ -45,6 +46,7 @@ namespace TruckGame
         public bool isDodgeRolling = false;
 
         public float radius = 15f;
+        private static SoundEffect dash;
 
         public Player()
         {
@@ -53,6 +55,7 @@ namespace TruckGame
 
         public void Start(Game1 game, Animation animation, Vector2 position)
         {
+            dash = game.Content.Load<SoundEffect>("Dash");
             animation.pivot = new Vector2(animation.FrameWidth / 2, animation.FrameHeight / 2);
             playerAnimation = animation;
             walkAnimation = animation;
@@ -160,6 +163,7 @@ namespace TruckGame
             // Dodge Roll
             if (((activeGame.currentKeyboardState.IsKeyDown(Keys.Z) && activeGame.previousKeyboardState.IsKeyUp(Keys.Z)) || (activeGame.currentKeyboardState.IsKeyDown(Keys.Space) && activeGame.previousKeyboardState.IsKeyUp(Keys.Space))) && dodgeCooldownTimer <= 0 && anyDirection)
             {
+                dash.Play();
                 Debug.WriteLine("Dodge");
                 isDodgeRolling = true;
                 dodgeTimer = dodgeLength;

@@ -259,3 +259,9 @@
 /processorParam:Quality=Best
 /build:TruckDeath.wav
 
+#begin Dash.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Dash.wav
+
