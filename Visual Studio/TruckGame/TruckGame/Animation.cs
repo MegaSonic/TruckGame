@@ -93,9 +93,6 @@ namespace TruckGame
             sourceRect = new Rectangle(currentFrame * FrameWidth, 0, FrameWidth, FrameHeight);
 
             // Grab the correct frame in the image strip by multiplying the currentFrame index by the frame width
-            //destinationRect.X = (int)(Position.X - (FrameWidth * scale) / 2);
-            //destinationRect.Y = (int)(Position.Y - (FrameHeight * scale) / 2);
-
             destinationRect.X = (int)(Position.X - (FrameWidth * scale) / 2);
             destinationRect.Y = (int)(Position.Y - (FrameHeight * scale) / 2);
 
@@ -109,7 +106,9 @@ namespace TruckGame
             // Only draw the animation when we are active
             if (Active)
             {
-                spriteBatch.Draw(spriteStrip, destinationRect, sourceRect, color, angle, pivot, SpriteEffects.None, depth);
+                // spriteBatch.Draw(spriteStrip, destinationRect, sourceRect, color, angle, pivot, SpriteEffects.None, depth);
+                spriteBatch.Draw(spriteStrip, Position, sourceRect, color, angle, pivot, scale, SpriteEffects.None, depth);
+
             }
         }
 

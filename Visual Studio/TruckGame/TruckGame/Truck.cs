@@ -75,6 +75,7 @@ namespace TruckGame
             deadAnimation.Initialize(damagedTruck, Vector2.Zero, 170, 103, 1, 1000, new Color(0.5f, 0.5f, 0.5f, 1.0f), 1f, true);
             deadAnimation.depth = 0.3f;
             deadAnimation.pivot = new Vector2(105, 53);
+           
 
             crashAnimation.Initialize(crashTruck, Vector2.Zero, 170, 103, 8, 80, Color.White, 1f, false);
             crashAnimation.depth = 0.3f;
@@ -93,14 +94,6 @@ namespace TruckGame
             tag = "Truck";
             
             
-        }
-
-        public Rectangle BoundingBox
-        {
-            get
-            {
-                return new Rectangle((int)this.X - truckAnimation.FrameWidth / 2, (int)this.Y - truckAnimation.FrameHeight / 2, truckAnimation.FrameWidth, truckAnimation.FrameHeight);
-            }
         }
 
         public void Collided(GameObject collidedWith)
@@ -302,6 +295,14 @@ namespace TruckGame
             get
             {
                 return radius;
+            }
+        }
+
+        public Vector2 Pivot
+        {
+            get
+            {
+                return truckAnimation.Position + truckAnimation.pivot;
             }
         }
     }

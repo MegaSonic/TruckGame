@@ -22,5 +22,10 @@ namespace TruckGame
 
         void Collided(GameObject collidedWith);
 
+        Vector2 Pivot
+        {
+            get;
+        }
+
     }
 }

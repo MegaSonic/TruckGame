@@ -27,7 +27,7 @@ namespace TruckGame
             activeGame = game;
             animation = new Animation();
             animation.Initialize(texture, position, 900, 900, 14, 10, Color.White, 1f, false);
-            animation.pivot = new Vector2(0, 0);
+            animation.pivot = new Vector2(450, 450);
             animation.Position = this.position;
             animation.depth = 0f;
             Debug.WriteLine("Shockwave created");

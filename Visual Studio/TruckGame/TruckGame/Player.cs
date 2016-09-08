@@ -44,7 +44,7 @@ namespace TruckGame
 
         public bool isDodgeRolling = false;
 
-        public float radius = 20f;
+        public float radius = 15f;
 
         public Player()
         {
@@ -89,8 +89,8 @@ namespace TruckGame
             // this.X += activeGame.currentGamePadState.ThumbSticks.Left.X * playerMoveSpeed * deltaTime;
             // this.Y -= activeGame.currentGamePadState.ThumbSticks.Left.Y * playerMoveSpeed * deltaTime;
 
-            
-            
+
+            playerAnimation.Position = this.Position;
 
             bool left = false, right = false;
             bool anyDirection = false;
@@ -276,6 +276,16 @@ namespace TruckGame
             if (collidedWith.tag == "Truck")
             {
                 Bloodstain stain = new Bloodstain(this.Position, (float) ((1 * Math.PI / 2) * activeGame.VectorToAngle(collidedWith.position - this.Position)), activeGame);
+                Console.WriteLine("Player at " + this.Position.X + ", " + this.Position.Y);
+                Console.WriteLine("Truck at " + collidedWith.position.X + ", " + collidedWith.position.Y);
+                float distanceBetweenObjects = (float)(Math.Pow(this.position.X - collidedWith.position.X, 2) + Math.Pow(this.position.Y - collidedWith.position.Y, 2));
+                ICollideable secondCollideable = collidedWith as ICollideable;
+                float sumOfRadii = (float)(Math.Pow(this.Radius + secondCollideable.Radius, 2));
+
+                Console.WriteLine("Player's pivot: " + this.Pivot);
+                Console.WriteLine("Truck's pivot: " + secondCollideable.Pivot);
+                Console.WriteLine("Distance squared: " + distanceBetweenObjects);
+                Console.WriteLine("Radius squared: " + sumOfRadii);
                 activeGame.objectsInScene.Add(stain);
                 activeGame.Reset();
 
@@ -288,6 +298,14 @@ namespace TruckGame
             get
             {
                 return radius;
+            }
+        }
+
+        public Vector2 Pivot
+        {
+            get
+            {
+                return playerAnimation.Position + walkAnimation.pivot;
             }
         }
     }
