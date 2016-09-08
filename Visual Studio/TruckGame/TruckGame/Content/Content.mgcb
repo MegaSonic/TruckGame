@@ -265,3 +265,9 @@
 /processorParam:Quality=Best
 /build:Dash.wav
 
+#begin Taunt.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Taunt.wav
+

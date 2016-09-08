@@ -47,6 +47,7 @@ namespace TruckGame
 
         public float radius = 15f;
         private static SoundEffect dash;
+        private static SoundEffect tauntfx;
 
         public Player()
         {
@@ -56,6 +57,8 @@ namespace TruckGame
         public void Start(Game1 game, Animation animation, Vector2 position)
         {
             dash = game.Content.Load<SoundEffect>("Dash");
+            tauntfx = game.Content.Load<SoundEffect>("Taunt");
+
             animation.pivot = new Vector2(animation.FrameWidth / 2, animation.FrameHeight / 2);
             playerAnimation = animation;
             walkAnimation = animation;
@@ -175,6 +178,7 @@ namespace TruckGame
             // Taunt
             if (((activeGame.currentKeyboardState.IsKeyDown(Keys.X) && activeGame.previousKeyboardState.IsKeyUp(Keys.X)) || (activeGame.currentKeyboardState.IsKeyDown(Keys.LeftShift) && activeGame.previousKeyboardState.IsKeyUp(Keys.LeftShift))) && tauntTimer <= 0)
             {
+                tauntfx.Play();
                 Shockwave taunt = new Shockwave(this.Position, activeGame);
                 activeGame.objectsToAdd.Add(taunt);
                 tauntTimer = tauntCooldownLength;
