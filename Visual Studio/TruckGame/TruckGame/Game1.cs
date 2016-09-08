@@ -189,7 +189,7 @@ namespace TruckGame
 
         protected void UpdateMainMenu(GameTime gameTime)
         {
-            if ((GameStart.enterButton(currentMouseState) && currentMouseState.LeftButton == ButtonState.Pressed) || (previousKeyboardState.IsKeyUp(Keys.Z) && currentKeyboardState.IsKeyDown(Keys.Z)))
+            if ((GameStart.enterButton(currentMouseState) && currentMouseState.LeftButton == ButtonState.Pressed) || (previousKeyboardState.IsKeyUp(Keys.Enter) && currentKeyboardState.IsKeyDown(Keys.Enter)))
             {
                 _state = GameState.GamePlay;
                 UpdateGamePlay(gameTime);
@@ -235,11 +235,11 @@ namespace TruckGame
 
             CheckCollisions();
 
-
+            /*
             if (currentKeyboardState.IsKeyDown(Keys.A) && previousKeyboardState.IsKeyUp(Keys.A)) {
                 SpawnTruck();
             }
-
+            */
 
             
             if (spawnTimer < 0f)
@@ -327,7 +327,7 @@ namespace TruckGame
         {
             
 
-            if ((GameRestart.enterButton(currentMouseState) && Mouse.GetState().LeftButton == ButtonState.Pressed) || (previousKeyboardState.IsKeyUp(Keys.Z) && currentKeyboardState.IsKeyDown(Keys.Z)))
+            if ((GameRestart.enterButton(currentMouseState) && Mouse.GetState().LeftButton == ButtonState.Pressed) || (previousKeyboardState.IsKeyUp(Keys.Enter) && currentKeyboardState.IsKeyDown(Keys.Enter)))
             {
                 Reset();
                 _state = GameState.GamePlay;
@@ -393,12 +393,12 @@ namespace TruckGame
 
         void DrawEndOfGame(GameTime gameTime)
         {
-
+            timer.position = new Vector2(925, 200);
             spriteBatch.Draw(goBackground, new Rectangle(0, 0, background.Width, background.Height), null, Color.White, 0.0f, Vector2.Zero, SpriteEffects.None, 1.0f);
             //spriteBatch.Draw(GameExit.texture, new Rectangle((int)GameExit.position.X, (int)GameExit.position.Y, GameExit.texture.Width, GameExit.texture.Height), null, Color.White, 0.0f, new Vector2(GameExit.texture.Width / 2, GameStart.texture.Height / 2), SpriteEffects.None, 1.0f);
             spriteBatch.Draw(GameRestart.texture, new Rectangle((int)GameRestart.position.X, (int)GameRestart.position.Y, GameRestart.texture.Width, GameRestart.texture.Height), null, Color.White, 0f, new Vector2(GameRestart.texture.Width / 2, GameStart.texture.Height / 2), SpriteEffects.None, 1.0f);
-            spriteBatch.DrawString(timer.font,"Score", new Vector2(800, 200), Color.Red, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0.5f);
-            timer.position = new Vector2(925,200);
+            spriteBatch.DrawString(timer.font,"Score", new Vector2(timer.position.X - 200, 200), Color.Red, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0.5f);
+            
             timer.Draw(spriteBatch);
         }
 
